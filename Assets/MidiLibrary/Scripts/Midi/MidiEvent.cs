@@ -10,6 +10,7 @@
         public byte parameter1;
         public byte parameter2;
         public byte channel;
+        public bool enabled = true;
         //--Public Methods
         public MidiEvent()
         {

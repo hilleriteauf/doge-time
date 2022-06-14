@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CSharpSynth.Midi;
 using CSharpSynth.Synthesis;
 using CSharpSynth.Banks;
+using Assets.Scripts.MIDI;
 using UnityEngine;
 
 namespace CSharpSynth.Sequencer
@@ -26,6 +27,8 @@ namespace CSharpSynth.Sequencer
         public delegate void NoteOffEventHandler(int channel, int note);
         public event NoteOffEventHandler NoteOffEvent;
         //--Public Properties
+
+        public PlayableNote[] PlayableNotes { get; private set; }
         public bool isPlaying
         {
             get { return playing; }
@@ -106,7 +109,7 @@ namespace CSharpSynth.Sequencer
                         }
                     }
                     //Set total time to proper value
-                    _MidiFile.Tracks[0].TotalTime = _MidiFile.Tracks[0].MidiEvents[_MidiFile.Tracks[0].MidiEvents.Length-1].deltaTime;
+                    _MidiFile.Tracks[0].TotalTime = _MidiFile.Tracks[0].MidiEvents[_MidiFile.Tracks[0].MidiEvents.Length - 1].deltaTime;
                     //reset tempo
                     _MidiFile.BeatsPerMinute = 120;
                     //mark midi as ready for sequencing
@@ -153,8 +156,51 @@ namespace CSharpSynth.Sequencer
                 Debug.Log("Error Loading Midi:\n" + ex.Message);
                 return false;
             }
+            ExtractPlayableNotes(mf);
             return LoadMidi(mf, UnloadUnusedInstruments);
         }
+
+        private void ExtractPlayableNotes(MidiFile midiFile)
+        {
+            MidiTrack playableTrack = midiFile.Tracks[0];
+
+            MidiEvent[,] onNoteEvents = new MidiEvent[16, 128];
+
+            PlayableNote[] tempPlayableNotes = new PlayableNote[playableTrack.NotesPlayed];
+            int playableNotesIndex = 0;
+
+            for (int i = 0; i < playableTrack.MidiEvents.Length; i++)
+            {
+                MidiEvent midiEvent = playableTrack.MidiEvents[i];
+
+                Debug.Log($"MidiEvent {midiEvent.midiChannelEvent}, channel: {midiEvent.channel}, note: {midiEvent.parameter1}, deltaTime: {midiEvent.deltaTime}");
+
+                if (midiEvent.midiChannelEvent == MidiHelper.MidiChannelEvent.Note_On)
+                {
+                    if (onNoteEvents[midiEvent.channel, midiEvent.parameter1] != null)
+                    {
+                        Debug.LogWarning($"Missing a NoteOff event in playable track, Midi file might be corrupted, playableNotesIndex : {playableNotesIndex}, previousNote channel : {onNoteEvents[midiEvent.channel, midiEvent.parameter1].channel}, previousNote note : {onNoteEvents[midiEvent.channel, midiEvent.parameter1].parameter1}");
+                    }
+                    onNoteEvents[midiEvent.channel, midiEvent.parameter1] = midiEvent;
+                }
+                else if (midiEvent.midiChannelEvent == MidiHelper.MidiChannelEvent.Note_Off)
+                {
+                    if (onNoteEvents[midiEvent.channel, midiEvent.parameter1] != null)
+                    {
+                        tempPlayableNotes[playableNotesIndex] = new PlayableNote(onNoteEvents[midiEvent.channel, midiEvent.parameter1], midiEvent);
+                        onNoteEvents[midiEvent.channel, midiEvent.parameter1] = null;
+                        playableNotesIndex++;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Missing a NoteOn event in playable track, Midi file might be corrupted, playableNotesIndex : {playableNotesIndex}");
+                    }
+                }
+            }
+
+            PlayableNotes = tempPlayableNotes;
+        }
+
         public void Play()
         {
             if (playing == true)
@@ -252,6 +298,12 @@ namespace CSharpSynth.Sequencer
         }
         public void ProcessMidiEvent(MidiEvent midiEvent)
         {
+
+            if (!midiEvent.enabled)
+            {
+                return;
+            }
+
             if (midiEvent.midiChannelEvent != MidiHelper.MidiChannelEvent.None)
             {
                 switch (midiEvent.midiChannelEvent)
@@ -355,7 +407,7 @@ namespace CSharpSynth.Sequencer
             while (eventIndex < _MidiFile.Tracks[0].EventCount && _MidiFile.Tracks[0].MidiEvents[eventIndex].deltaTime < (sampleTime + amount))
             {
                 if (_MidiFile.Tracks[0].MidiEvents[eventIndex].midiChannelEvent != MidiHelper.MidiChannelEvent.Note_On)
-                    ProcessMidiEvent(_MidiFile.Tracks[0].MidiEvents[eventIndex]);               
+                    ProcessMidiEvent(_MidiFile.Tracks[0].MidiEvents[eventIndex]);
                 eventIndex++;
             }
             sampleTime = sampleTime + amount;

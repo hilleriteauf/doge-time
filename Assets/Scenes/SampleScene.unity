@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c3fa9b062915974a85ce8ce9d28c260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  midiFilePath: Midis/Groove.mid
+  midiFilePath: Midis/Debut-Jerk-It-Out.mid
   ShouldPlayFile: 1
   bankFilePath: GM Bank/gm
   bufferSize: 1024
