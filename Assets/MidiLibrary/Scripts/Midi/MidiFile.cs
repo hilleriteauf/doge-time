@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -55,6 +55,10 @@ namespace CSharpSynth.Midi
                 //UnitySynth
                 //midiStream = File.Open(filename, FileMode.Open);
                 TextAsset midiFileName = Resources.Load(filename) as TextAsset;
+                if (midiFileName == null)
+                {
+                    throw new Exception($"Cannot find midiFile at path '{filename}' !");
+                }
                 midiStream = new MemoryStream(midiFileName.bytes);
                 loadStream(midiStream);
             }

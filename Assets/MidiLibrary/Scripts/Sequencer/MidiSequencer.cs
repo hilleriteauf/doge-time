@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using CSharpSynth.Midi;
 using CSharpSynth.Synthesis;
@@ -21,6 +21,7 @@ namespace CSharpSynth.Sequencer
         private MidiSequencerEvent seqEvt;
         private int sampleTime;
         private int eventIndex;
+        private float tempoMultiplier;
         //--Events
         public delegate void NoteOnEventHandler(int channel, int note, int velocity);
         public event NoteOnEventHandler NoteOnEvent;
@@ -56,13 +57,14 @@ namespace CSharpSynth.Sequencer
             set { PitchWheelSemitoneRange = value; }
         }
         //--Public Methods
-        public MidiSequencer(StreamSynthesizer synth)
+        public MidiSequencer(StreamSynthesizer synth, float tempoMultiplier)
         {
             currentPrograms = new int[16]; //16 channels
             this.synth = synth;
             this.synth.setSequencer(this);
             blockList = new List<byte>();
             seqEvt = new MidiSequencerEvent();
+            this.tempoMultiplier = tempoMultiplier;
         }
         public string getProgramName(int channel)
         {
@@ -139,6 +141,7 @@ namespace CSharpSynth.Sequencer
                     synth.SwitchBank(BankManager.Count - 1);
                 }
             }
+            CalculatePlayableNoteTime();
             return true;
         }
         public bool LoadMidi(string file, bool UnloadUnusedInstruments)
@@ -153,7 +156,7 @@ namespace CSharpSynth.Sequencer
             catch (Exception ex)
             {
                 //UnitySynth
-                Debug.Log("Error Loading Midi:\n" + ex.Message);
+                Debug.LogError("Error Loading Midi:\n" + ex);
                 return false;
             }
             ExtractPlayableNotes(mf);
@@ -166,20 +169,19 @@ namespace CSharpSynth.Sequencer
 
             MidiEvent[,] onNoteEvents = new MidiEvent[16, 128];
 
-            PlayableNote[] tempPlayableNotes = new PlayableNote[playableTrack.NotesPlayed];
-            int playableNotesIndex = 0;
+            List<PlayableNote> playableNoteList = new List<PlayableNote>();
 
             for (int i = 0; i < playableTrack.MidiEvents.Length; i++)
             {
                 MidiEvent midiEvent = playableTrack.MidiEvents[i];
 
-                Debug.Log($"MidiEvent {midiEvent.midiChannelEvent}, channel: {midiEvent.channel}, note: {midiEvent.parameter1}, deltaTime: {midiEvent.deltaTime}");
+                //Debug.Log($"MidiEvent {midiEvent.midiChannelEvent}, channel: {midiEvent.channel}, note: {midiEvent.parameter1}, deltaTime: {midiEvent.deltaTime}");
 
                 if (midiEvent.midiChannelEvent == MidiHelper.MidiChannelEvent.Note_On)
                 {
                     if (onNoteEvents[midiEvent.channel, midiEvent.parameter1] != null)
                     {
-                        Debug.LogWarning($"Missing a NoteOff event in playable track, Midi file might be corrupted, playableNotesIndex : {playableNotesIndex}, previousNote channel : {onNoteEvents[midiEvent.channel, midiEvent.parameter1].channel}, previousNote note : {onNoteEvents[midiEvent.channel, midiEvent.parameter1].parameter1}");
+                        Debug.LogWarning($"Missing a NoteOff event in playable track, Midi file might be corrupted");
                     }
                     onNoteEvents[midiEvent.channel, midiEvent.parameter1] = midiEvent;
                 }
@@ -187,18 +189,25 @@ namespace CSharpSynth.Sequencer
                 {
                     if (onNoteEvents[midiEvent.channel, midiEvent.parameter1] != null)
                     {
-                        tempPlayableNotes[playableNotesIndex] = new PlayableNote(onNoteEvents[midiEvent.channel, midiEvent.parameter1], midiEvent);
+                        playableNoteList.Add(new PlayableNote(onNoteEvents[midiEvent.channel, midiEvent.parameter1], midiEvent));
                         onNoteEvents[midiEvent.channel, midiEvent.parameter1] = null;
-                        playableNotesIndex++;
                     }
                     else
                     {
-                        Debug.LogWarning($"Missing a NoteOn event in playable track, Midi file might be corrupted, playableNotesIndex : {playableNotesIndex}");
+                        Debug.LogWarning($"Missing a NoteOn event in playable track, Midi file might be corrupted");
                     }
                 }
             }
 
-            PlayableNotes = tempPlayableNotes;
+            PlayableNotes = playableNoteList.ToArray();
+        }
+
+        private void CalculatePlayableNoteTime()
+        {
+            foreach (PlayableNote playableNote in PlayableNotes)
+            {
+                playableNote.CalculateTime(synth.SampleRate);
+            }
         }
 
         public void Play()
@@ -382,7 +391,7 @@ namespace CSharpSynth.Sequencer
         //--Private Methods
         private int DeltaTimetoSamples(uint DeltaTime)
         {
-            return SynthHelper.getSampleFromTime(synth.SampleRate, (DeltaTime * (60.0f / (((int)_MidiFile.BeatsPerMinute) * _MidiFile.MidiHeader.DeltaTiming))));
+            return SynthHelper.getSampleFromTime(synth.SampleRate, (DeltaTime * (60.0f / (((int)_MidiFile.BeatsPerMinute) * _MidiFile.MidiHeader.DeltaTiming * tempoMultiplier))));
         }
         private void SetTime(TimeSpan time)
         {

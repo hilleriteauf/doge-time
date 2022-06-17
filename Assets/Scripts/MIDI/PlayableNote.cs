@@ -1,4 +1,5 @@
 ﻿using CSharpSynth.Midi;
+using CSharpSynth.Synthesis;
 
 namespace Assets.Scripts.MIDI
 {
@@ -39,6 +40,15 @@ namespace Assets.Scripts.MIDI
             }
         }
 
+        private float _onTime;
+        public float OnTime { get { return _onTime; } }
+
+        private float _offTime;
+        public float OffTime { get { return _offTime; } }
+
+        private float _duration;
+        public float Duration { get { return _duration; } }
+
         public PlayableNote(MidiEvent onEvent, MidiEvent offEvent)
         {
             this.onEvent = onEvent;
@@ -48,6 +58,13 @@ namespace Assets.Scripts.MIDI
             ExpectedNote = GetMusicNoteFromMidiNoteValue(onEvent.parameter1);
 
             PlacedNote = MusicNote.Null;
+        }
+
+        public void CalculateTime(int sampleRate)
+        {
+            _onTime = SynthHelper.getTimeFromSample(sampleRate, (int)onEvent.deltaTime);
+            _offTime = SynthHelper.getTimeFromSample(sampleRate, (int)offEvent.deltaTime);
+            _duration = _offTime - _onTime;
         }
 
         private MusicNote AddDieseToPlacedNote(MusicNote placedNote)

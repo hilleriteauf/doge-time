@@ -10,94 +10,38 @@ using Assets.Scripts.MIDI;
 [RequireComponent(typeof(AudioSource))]
 public class MIDIPlayer : MonoBehaviour
 {
-    //Public
-    //Check the Midi's file folder for different songs
-    public string midiFilePath = "Midis/Groove.mid";
-    public bool ShouldPlayFile = true;
-
+    public float Gain = 1f;
+    
     //Try also: "FM Bank/fm" or "Analog Bank/analog" for some different sounds
-    public string bankFilePath = "GM Bank/gm";
-    public int bufferSize = 1024;
-    public int midiNote = 60;
-    public int midiNoteVolume = 100;
-    [Range(0, 127)] //From Piano to Gunshot
-    public int midiInstrument = 0;
-    //Private 
-    private float[] sampleBuffer;
-    private float gain = 1f;
-    private MidiSequencer midiSequencer;
-    private StreamSynthesizer midiStreamSynthesizer;
+    private string BankFilePath = "GM Bank/gm";
 
-    private float sliderValue = 1.0f;
-    private float maxSliderValue = 127.0f;
+    private int BufferSize = 1024;
+    private float[] SampleBuffer;
+    private MidiSequencer MidiSequencer;
+    private StreamSynthesizer MidiStreamSynthesizer;
 
-    // Awake is called when the script instance
-    // is being loaded.
-    void Awake()
+    private float _startTime = -1;
+    public float StartTime { get { return _startTime; } }
+
+    public PlayableNote[] PlayableNotes { get { return MidiSequencer.PlayableNotes; } }
+
+    public void LoadSong(string midiFileName, float tempoMultiplier)
     {
-        midiStreamSynthesizer = new StreamSynthesizer(44100, 2, bufferSize, 40);
-        sampleBuffer = new float[midiStreamSynthesizer.BufferSize];
+        MidiStreamSynthesizer = new StreamSynthesizer(44100, 2, BufferSize, 40);
+        SampleBuffer = new float[MidiStreamSynthesizer.BufferSize];
 
-        midiStreamSynthesizer.LoadBank(bankFilePath);
+        MidiStreamSynthesizer.LoadBank(BankFilePath);
+        MidiSequencer = new MidiSequencer(MidiStreamSynthesizer, tempoMultiplier);
 
-        midiSequencer = new MidiSequencer(midiStreamSynthesizer);
-
-        //These will be fired by the midiSequencer when a song plays. Check the console for messages if you uncomment these
-        //midiSequencer.NoteOnEvent += new MidiSequencer.NoteOnEventHandler (MidiNoteOnHandler);
-        //midiSequencer.NoteOffEvent += new MidiSequencer.NoteOffEventHandler (MidiNoteOffHandler);			
+        MidiSequencer.LoadMidi("Midis/" + midiFileName, false);
     }
 
-    void LoadSong(string midiPath)
+    public void PlaySong()
     {
-        midiSequencer.LoadMidi(midiPath, false);
-
-        Debug.Log($"Playable note length : {midiSequencer.PlayableNotes.Length}");
-
-        for (int i = 0; i < midiSequencer.PlayableNotes.Length; i++)
-        {
-            PlayableNote playableNote = midiSequencer.PlayableNotes[i];
-            Debug.Log($"Note n°{i}, expected note: {playableNote.ExpectedNote}, octave: {playableNote.Octave}");
-            playableNote.PlacedNote = playableNote.ExpectedNote;
-        }
-
-        midiSequencer.Play();
+        MidiSequencer.Play();
+        _startTime = Time.time;
     }
 
-    // Start is called just before any of the
-    // Update methods is called the first time.
-    void Start()
-    {
-        LoadSong(midiFilePath);
-    }
-
-    // Update is called every frame, if the
-    // MonoBehaviour is enabled.
-    void Update()
-    {
-        if (!midiSequencer.isPlaying)
-        {
-            //if (!GetComponent<AudioSource>().isPlaying)
-            if (ShouldPlayFile)
-            {
-            }
-        }
-        else if (!ShouldPlayFile)
-        {
-            midiSequencer.Stop(true);
-        }
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            midiStreamSynthesizer.NoteOn(2, midiNote, midiNoteVolume, midiInstrument);
-        }
-
-        if (Input.GetButtonUp("Fire1"))
-        {
-            midiStreamSynthesizer.NoteOff(2, midiNote);
-        }
-
-
-    }
 
     // See http://unity3d.com/support/documentation/ScriptReference/MonoBehaviour.OnAudioFilterRead.html for reference code
     //	If OnAudioFilterRead is implemented, Unity will insert a custom filter into the audio DSP chain.
@@ -116,21 +60,11 @@ public class MIDIPlayer : MonoBehaviour
     private void OnAudioFilterRead(float[] data, int channels)
     {
         //This uses the Unity specific float method we added to get the buffer
-        midiStreamSynthesizer.GetNext(sampleBuffer);
+        MidiStreamSynthesizer.GetNext(SampleBuffer);
 
         for (int i = 0; i < data.Length; i++)
         {
-            data[i] = sampleBuffer[i] * gain;
+            data[i] = SampleBuffer[i] * Gain;
         }
-    }
-
-    public void MidiNoteOnHandler(int channel, int note, int velocity)
-    {
-        Debug.Log("NoteOn: " + note.ToString() + " Velocity: " + velocity.ToString());
-    }
-
-    public void MidiNoteOffHandler(int channel, int note)
-    {
-        Debug.Log("NoteOff: " + note.ToString());
     }
 }
