@@ -46,11 +46,11 @@ public class RandomGeneration : MonoBehaviour
             SpawnNote(Temp);
             Temp = null;
         }
-        foreach (GameObject Note in GeneratedFloatingNote)
+        /*foreach (GameObject Note in GeneratedFloatingNote)
         {
             Debug.Log(Note.ToString());
             //Note.GetComponent<FloatingNote>().Move(Time.deltaTime);
-        }
+        }*/
     }
 
     private GameObject GenerateNote() 
@@ -59,8 +59,7 @@ public class RandomGeneration : MonoBehaviour
 
         toGenerate.GetComponent<Transform>().localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
-        List<string> AvailableNote = NotSoRandomlyPicked();
-        Note = AvailableNote.Count > 1 ? AvailableNote[Random.Range(0,AvailableNote.Count)] : AvailableNote[0];
+        Note = NotSoRandomlyPicked();
         switch (Note)
         {
             case "Do":
@@ -101,13 +100,13 @@ public class RandomGeneration : MonoBehaviour
     {
         try
         {
-            NoteDispersion.Add("Do", 0);
-            NoteDispersion.Add("Re", 0);
-            NoteDispersion.Add("Mi", 0);
-            NoteDispersion.Add("Fa", 0);
-            NoteDispersion.Add("Sol", 0);
-            NoteDispersion.Add("La", 0);
-            NoteDispersion.Add("Si", 0);
+            NoteDispersion.Add(NoteList.Do.ToString(), 0);
+            NoteDispersion.Add(NoteList.Re.ToString(), 0);
+            NoteDispersion.Add(NoteList.Mi.ToString(), 0);
+            NoteDispersion.Add(NoteList.Fa.ToString(), 0);
+            NoteDispersion.Add(NoteList.Sol.ToString(), 0);
+            NoteDispersion.Add(NoteList.La.ToString(), 0);
+            NoteDispersion.Add(NoteList.Si.ToString(), 0);
         }
         catch (System.Exception)
         {
@@ -118,26 +117,37 @@ public class RandomGeneration : MonoBehaviour
         Debug.Log("NoteDispersion initialized !");
     }
 
-    private List<string> NotSoRandomlyPicked() 
+    private string NotSoRandomlyPicked() 
     {
-        List<string> TempAvailableNote = new List<string>();
+        string PickedNote = null;
+        NoteList RandomPickingNote = (NoteList)Random.Range(0,5);
+        int PreventInfinite = 0;
 
-        foreach (var item in NoteDispersion)
+
+        while (PickedNote == null)
         {
-            if (item.Value <= 2)
-            {
-                NoteDispersion[item.Key] += 1;
-                if (!TempAvailableNote.Contains(item.Key))
+            if (NoteDispersion.ContainsValue(0)) {
+                foreach (string item in NoteDispersion.Keys)
                 {
-                    TempAvailableNote.Add(item.Key);
+                    if (NoteDispersion[item] == 0)
+                    {
+                        NoteDispersion[item] += 1;
+                        PickedNote = item;
+                    }
                 }
-                Debug.Log(item.ToString());
-            } else {
-                TempAvailableNote.Remove(item.Key);
+            } else
+            {
+                RandomPickingNote =  (NoteList)Random.Range(0,7);
+                if (NoteDispersion[RandomPickingNote.ToString()] <= 2 || PreventInfinite > 500)
+                {
+                    NoteDispersion[RandomPickingNote.ToString()] += 1;
+                    PickedNote = RandomPickingNote.ToString();
+                    PreventInfinite = 0;
+                }
+                PreventInfinite++;
             }
         }
-
-        return TempAvailableNote;
+        return PickedNote;
     }
 
     private void SpawnNote(GameObject toInstanciate) {
