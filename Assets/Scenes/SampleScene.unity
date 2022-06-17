@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MIDIPlayer: {fileID: 1254976814}
-  MidiFileName: Debut-Jerk-It-Out.mid
+  MidiFileName: Never-Gonna-Give-You-Up.mid
   TempoMultiplier: 1
 --- !u!4 &1526288626
 Transform:
