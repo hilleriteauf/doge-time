@@ -15,10 +15,17 @@ public class Combo : MonoBehaviour
 
     private int numberOfDigitsInScoreAmount;
 
+    
+    public GameObject gradin;
+    public GameObject publicSprite;
+    private SpriteRenderer spriteR;
+    public Sprite[] sprites;
+    
+
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("qt");
+        
         for (int i = 0; i <= 2; i++)
         {
             characters[i].sprite = digits[0];
@@ -29,11 +36,35 @@ public class Combo : MonoBehaviour
     }
 
 
-    public void AddScoreAndDisplayIt(int randomScoreValue)
+    public void AddComboAndDisplayIt(int randomScoreValue)
     {
-        scoreAmount += randomScoreValue;
-        Debug.Log("+ " + randomScoreValue);
+        scoreAmount = randomScoreValue;
+        //Debug.Log("+ " + randomScoreValue);
 
+        spriteR = gradin.GetComponent<SpriteRenderer>();
+
+        if (scoreAmount > 0)
+        {
+            publicSprite.transform.Translate(Vector3.up*30 * Time.deltaTime);
+        }
+
+        if (scoreAmount < 50) {
+            spriteR.sprite = sprites[0];
+        }
+        if (scoreAmount >= 50 && scoreAmount < 100)
+        {
+            spriteR.sprite = sprites[1];
+        }
+        if (scoreAmount >= 100 && scoreAmount < 150)
+        {
+            spriteR.sprite = sprites[2];
+        }
+        if (scoreAmount >= 150)
+        {
+            spriteR.sprite = sprites[3];
+        }
+        
+       
 
         int[] scoreAmountDigitsArray = GetDigitsArrayFromScoreAmount(scoreAmount);
 
@@ -79,13 +110,16 @@ public class Combo : MonoBehaviour
         return listOfInts.ToArray();
     }
 
+    /*
     void Update()
     {
         if (Input.GetKeyDown("q"))
         {
-            AddScoreAndDisplayIt(100);
+            AddScoreAndDisplayIt(10);
         }
     }
+    */
+    
 
   
     // Update is called once per frame
