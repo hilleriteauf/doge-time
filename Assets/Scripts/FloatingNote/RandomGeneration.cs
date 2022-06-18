@@ -6,9 +6,10 @@ public class RandomGeneration : MonoBehaviour
     public GameObject FloatingNotePrefab;
     private static List<GameObject> GeneratedFloatingNote = new List<GameObject>();
     private static Dictionary<string, int> NoteDispersion = new Dictionary<string, int>();
-    public static int MaxNotesCount = 21;
+    public static int MaxNotesCount = 150;
     public static GameObject SpawnPoint;
     private float SpawnCoor;
+    private float DespawnCoor;
     public enum NoteList
     {
         Do,
@@ -35,16 +36,13 @@ public class RandomGeneration : MonoBehaviour
         if (!cam.orthographic) {Debug.LogError("Camera.main is not Orthographic, failed to create edge colliders"); return;}
 
         SpawnCoor = ((Vector2)cam.ScreenToWorldPoint(new Vector3(0, 0, cam.nearClipPlane))).x;
-
+        DespawnCoor =  ((Vector2)cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0, cam.nearClipPlane))).x;
         Debug.Log(SpawnCoor);
 
         InitNoteDispersionTable();
         for (int i = 1; i < MaxNotesCount; i++)
         {   
-            GameObject Temp = GenerateNote();
-            GeneratedFloatingNote.Add(Temp);
-            SpawnNote(Temp);
-            Temp = null;
+            GeneratedFloatingNote.Add(GenerateNote(FloatingNotePrefab));
         }
     }
 
@@ -53,22 +51,28 @@ public class RandomGeneration : MonoBehaviour
     {
         if (GeneratedFloatingNote.Count < MaxNotesCount)
         {
-            GameObject Temp = GenerateNote();
-            GeneratedFloatingNote.Add(Temp);
-            SpawnNote(Temp);
-            Temp = null;
+            GeneratedFloatingNote.Add(GenerateNote(FloatingNotePrefab));
         }
-        /*foreach (GameObject Note in GeneratedFloatingNote)
+        foreach (GameObject Note in GeneratedFloatingNote)
         {
-            Debug.Log(Note.ToString());
-            //Note.GetComponent<FloatingNote>().Move(Time.deltaTime);
-        }*/
+            Note.transform.Translate(new Vector3(1, 0, 0) * Time.deltaTime * 3 * Note.GetComponent<FloatingNote>().getSpeed()); 
+            if (Note.transform.position.x > DespawnCoor + Note.GetComponent<SpriteRenderer>().transform.localScale.x )
+            {
+                GeneratedFloatingNote.Remove(Note);
+                NoteDispersion[Note.GetComponent<FloatingNote>().getNote()] -= 1;
+                Destroy(Note);
+            }
+        }
     }
 
-    private GameObject GenerateNote() 
+    private GameObject GenerateNote(GameObject toInstanciate) 
     {
-        GameObject toGenerate = FloatingNotePrefab;
+        Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(-4.5f, 4.5f));
 
+
+        GameObject toGenerate = Instantiate(toInstanciate);
+
+        toGenerate.GetComponent<Transform>().position = objpos;
         toGenerate.GetComponent<Transform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         Note = NotSoRandomlyPicked();
@@ -103,6 +107,7 @@ public class RandomGeneration : MonoBehaviour
 
         toGenerate.GetComponent<FloatingNote>().setNote(Note);
         toGenerate.GetComponent<FloatingNote>().setNoteColor(Color);
+        toGenerate.GetComponent<FloatingNote>().setSpeed(Random.Range(1f, 5f));
 
         return toGenerate;
     }
@@ -160,13 +165,4 @@ public class RandomGeneration : MonoBehaviour
         }
         return PickedNote;
     }
-
-    private void SpawnNote(GameObject toInstanciate) {
-        Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(-4.5f, 4.5f));
-
-        toInstanciate.GetComponent<Transform>().position = objpos;
-
-        Instantiate(toInstanciate);
-    }
-
 }

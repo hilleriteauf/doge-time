@@ -10,6 +10,7 @@ public class FloatingNote : MonoBehaviour
 
     [SerializeField]
     private Color NoteColor;
+    private float Speed;
 
     public void setNote(string _Note)
     {
@@ -27,5 +28,14 @@ public class FloatingNote : MonoBehaviour
     public Color getNoteColor()
     {
         return this.NoteColor;
+    }
+
+    public void setSpeed(float _Speed)
+    {
+        this.Speed = _Speed;
+    }
+    public float getSpeed()
+    {
+        return this.Speed;
     }
 }
