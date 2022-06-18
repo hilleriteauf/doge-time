@@ -57,37 +57,36 @@ public class RandomGeneration : MonoBehaviour
     {
         GameObject toGenerate = FloatingNotePrefab;
 
-        toGenerate.GetComponent<Transform>().localScale = new Vector3(0.3f, 0.3f, 0.3f);
+        toGenerate.GetComponent<Transform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         Note = NotSoRandomlyPicked();
         switch (Note)
         {
             case "Do":
-            Color = Color.red;
-            break;
+                Color = new Color(1f, 0f, 0f);
+                break;
             case "Re":
-            Color = Color.magenta;
-            break;
+                Color =  new Color(0.7333f, 0.4470f, 0.0039f);
+                break;
             case "Mi":
-            Color = Color.yellow;
-            break;
+                Color =  new Color(1f, 0.7490f, 0.3686f);
+                break;
             case "Fa":
-            Color = Color.green;
-            break;
+                Color =  new Color(0.6117f, 0.9333f, 0.01960f);
+                break;
             case "Sol":
-            Color = Color.cyan;
-            break;
+                Color =  new Color(0.0196f, 0.6941f, 0.9921f);
+                break;
             case "La":
-            Color = Color.blue;
-            break;
+                Color =  new Color(0.4274f, 0.0039f, 0.5843f);
+                break;
             case "Si":
-            Color = Color.white;
-            break;
-
+                Color =  new Color(1f, 0f, 0.9960f);
+                break;
 
             default:
-            Color = Color.black;
-            break;
+                Color =  Color.white;
+                break;
         }
 
         toGenerate.GetComponent<FloatingNote>().setNote(Note);
