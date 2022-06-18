@@ -1,53 +1,64 @@
 using System;
 using UnityEngine;
 
-public class Trajectoire : MonoBehaviour
+public class Trajectoire
 {
-    private Vector2 posDep;//Position de départ
-    private readonly float distance;//Distance à parcourir pour 
-    private float temps;//Durée actuelle de l'animation
-    private readonly float duree;//Durée à atteindre pour l'animation
-    private readonly int typeAnim;//Défini le type de l'animation
-    private bool animFini;//Bolléen qui détermine si l'animation est en cours ou finie
+    private float coordDep;//Position de dÃ©part
+    private float distance;//Distance Ã  parcourir pour 
+    private float temps;//DurÃ©e actuelle de l'animation
+    private float duree;//DurÃ©e Ã  atteindre pour l'animation
+    private int typeAnim;//DÃ©fini le type de l'animation
+    private bool animFini;//BollÃ©en qui dÃ©termine si l'animation est en cours ou finie
 
-    public Trajectoire(Vector2 posDep, Vector2 posFin, float duree, int typeAnim)
+    public bool AnimFini { get => animFini; set => animFini = value; }
+
+    public int TypeAnim { get => typeAnim; set => typeAnim = value; }
+    public float CoordDep { get => coordDep; set => coordDep = value; }
+
+    public Trajectoire(float coordDep, float coordFin, float duree, int typeAnim)
     {
-        this.posDep = posDep;
-        this.distance = (float)Math.Sqrt(Math.Pow(2, posDep.x-posFin.y) + Math.Pow(2, posDep.y-posFin.y));
+        this.coordDep = coordDep;
+        this.distance = Math.Abs(coordDep - coordFin);
         this.temps = 0;
         this.duree = duree;
         this.typeAnim = typeAnim;
         this.animFini = false;
     }
 
-    public Vector2 UpdatePos(Vector2 posActu)
+    public float UpdatePos(float coord)
     {
         if (!animFini)
         {
             temps += Time.deltaTime;
-            if (temps < duree)
-                animFini = true;
-            switch (typeAnim)
+            if (temps >= duree)
             {
-                case 1:
-                    return EaseInExpo();
-                case 2:
-                    return EaseOutExpo();
-                default:
-                    throw new Exception("type d'animation non correct");
+                animFini = true;
+                return coordDep + distance;//On revient parfaitement Ã  la position finale
+            }
+            else
+            {
+                switch (typeAnim)
+                {
+                    case 1:
+                        return EaseInExpo();
+                    case 2:
+                        return EaseOutExpo();
+                    default:
+                        throw new Exception("type d'animation non correct");
+                }
             }
         }
         else
-            return posActu;
+            return coord;
     }
 
-    public Vector2 EaseInExpo()
+    public float EaseInExpo()
     {
-        return new Vector2((float)(distance * Math.Pow(2, 10 * (temps / duree - 1)) + posDep.x), (float)(distance * Math.Pow(2, 10 * (temps / duree - 1)) + posDep.y));
+        return (float)(distance * Math.Pow(2, 10 * (temps / duree - 1)) + coordDep);
     }
 
-    public Vector2 EaseOutExpo()
+    public float EaseOutExpo()
     {
-        return new Vector2((float)(distance * (-Math.Pow(2, -10 * temps / duree) + 1) + posDep.x), (float)(distance * (-Math.Pow(2, -10 * temps / duree) + 1) + posDep.y));
+        return (float)(distance * (-Math.Pow(2, -10 * temps / duree) + 1) + coordDep);
     }
 }
