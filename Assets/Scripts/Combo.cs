@@ -31,7 +31,7 @@ public class Combo : MonoBehaviour
 
     public void AddScoreAndDisplayIt(int randomScoreValue)
     {
-        scoreAmount += randomScoreValue;
+        scoreAmount = randomScoreValue;
         Debug.Log("+ " + randomScoreValue);
 
 
@@ -79,6 +79,7 @@ public class Combo : MonoBehaviour
         return listOfInts.ToArray();
     }
 
+    /*
     void Update()
     {
         if (Input.GetKeyDown("q"))
@@ -86,6 +87,7 @@ public class Combo : MonoBehaviour
             AddScoreAndDisplayIt(100);
         }
     }
+    */
 
   
     // Update is called once per frame
