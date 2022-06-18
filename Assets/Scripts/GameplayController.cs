@@ -36,7 +36,7 @@ public class GameplayController : MonoBehaviour
         ChainManager.Initialize();
         float NoteGuideTravelTime = ChainManager.TravelTime;
         Debug.Log($"Starting music in {NoteGuideTravelTime} seconds");
-        StartCoroutine(PlayMusicAfterDelay(NoteGuideTravelTime));
+        StartCoroutine(PlayMusicAfterDelay(NoteGuideTravelTime - 0.05f));
 
         MusicStartTime = Time.time + NoteGuideTravelTime;
 
