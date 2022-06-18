@@ -53,15 +53,24 @@ public class RandomGeneration : MonoBehaviour
         {
             GeneratedFloatingNote.Add(GenerateNote(FloatingNotePrefab));
         }
+        
+        List<GameObject> NotesToDelete = new List<GameObject>();
+
         foreach (GameObject Note in GeneratedFloatingNote)
         {
-            Note.transform.Translate(new Vector3(1, 0, 0) * Time.deltaTime * 3 * Note.GetComponent<FloatingNote>().getSpeed()); 
+            Note.transform.Translate(new Vector3(1, 0, 0) * Time.deltaTime * 3 * Note.GetComponent<FloatingNote>().getSpeed());
+
             if (Note.transform.position.x > DespawnCoor + Note.GetComponent<SpriteRenderer>().transform.localScale.x )
             {
-                GeneratedFloatingNote.Remove(Note);
-                NoteDispersion[Note.GetComponent<FloatingNote>().getNote()] -= 1;
-                Destroy(Note);
+                NotesToDelete.Add(Note);
             }
+        }
+
+        foreach (GameObject Note in NotesToDelete)
+        {
+            GeneratedFloatingNote.Remove(Note);
+            NoteDispersion[Note.GetComponent<FloatingNote>().getNote()] -= 1;
+            Destroy(Note);
         }
     }
 
@@ -147,10 +156,11 @@ public class RandomGeneration : MonoBehaviour
                 {
                     if (NoteDispersion[item] == 0)
                     {
-                        NoteDispersion[item] += 1;
                         PickedNote = item;
+                        break;
                     }
                 }
+                NoteDispersion[PickedNote] += 1;
             } else
             {
                 RandomPickingNote =  (NoteList)Random.Range(0,7);
