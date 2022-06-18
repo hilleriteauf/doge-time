@@ -19,6 +19,11 @@ public class Sound : MonoBehaviour
         
     }
 
+    public static float GetSound()
+    {
+        return sound;
+    }
+
     public void SetSound()
     {
         sound = GetComponent<Scrollbar>().value;

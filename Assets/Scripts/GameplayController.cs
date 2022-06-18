@@ -29,7 +29,7 @@ public class GameplayController : MonoBehaviour
         for (int i = 0; i < PlayableNotes.Length; i++)
         {
             PlayableNote playableNote = PlayableNotes[i];
-            //Debug.Log($"Note n°{i}, expected note: {playableNote.ExpectedNote}, octave: {playableNote.Octave}");
+            //Debug.Log($"Note nï¿½{i}, expected note: {playableNote.ExpectedNote}, octave: {playableNote.Octave}");
             playableNote.PlacedNote = playableNote.ExpectedNote;
         }
 
@@ -52,7 +52,7 @@ public class GameplayController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Affiche les notes dans la console lorsqu'elles sont jouées
+        // Affiche les notes dans la console lorsqu'elles sont jouï¿½es
         while (MIDIPlayer.StartTime != -1 && PlayableNotesIndex < PlayableNotes.Length && PlayableNotes[PlayableNotesIndex].OnTime <= Time.time - MIDIPlayer.StartTime)
         {
             Debug.Log($"Playable Note {PlayableNotes[PlayableNotesIndex].PlacedNote} played at {PlayableNotes[PlayableNotesIndex].OnTime}");
