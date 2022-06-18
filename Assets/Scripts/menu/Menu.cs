@@ -88,7 +88,12 @@ public class Menu : MonoBehaviour
                 break;
             case 3://Sortie des titres du menu
                 if (listTitre[0].Traj.AnimFini)
-                    SceneManager.LoadScene(choixScene);
+                {
+                    if (choixScene == 4)
+                        Application.Quit();
+                    else
+                        SceneManager.LoadScene(choixScene);
+                }
                 else
                     UpdateCoord();
                 break;
