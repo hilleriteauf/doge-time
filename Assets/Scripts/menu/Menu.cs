@@ -112,31 +112,3 @@ public class Menu : MonoBehaviour
         }
     }
 }
-
-/*
-using UnityEngine.SceneManagement;
-
-public static class Menu
-{
-    public enum Scene
-    {
-        Menu,
-        Jeu
-    }
-
-    public static void Chargement(Scene scene)
-    {
-        SceneManager.LoadScene(scene.ToString());
-    }
-
-    public static void ChargementMenu()
-    {
-        Chargement(Scene.Menu);
-    }
-
-    public static void ChargementJeu()
-    {
-        Chargement(Scene.Jeu);
-    }
-}
-*/
