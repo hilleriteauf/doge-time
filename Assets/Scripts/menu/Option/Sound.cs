@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayAction : MonoBehaviour
+public class Sound : MonoBehaviour
 {
+    public static float sound = 0.5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +17,10 @@ public class PlayAction : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetSound()
+    {
+        sound = GetComponent<Scrollbar>().value;
     }
 }

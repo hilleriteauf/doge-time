@@ -17,7 +17,7 @@ public class TitreMenu
     public GameObject GObject { get => titre; set => titre = value; }
     public Trajectoire Traj { get => traj; set => traj = value; }
 
-    public TitreMenu(Camera cam, GameObject titre, List<Vector2> pos)
+    public TitreMenu(GameObject titre, List<Vector2> pos)
     {
         this.titre = titre;
 
