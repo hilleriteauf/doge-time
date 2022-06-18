@@ -28,20 +28,21 @@ public class NoteGuideController : MonoBehaviour
 
     private bool _disabledAfterSpawn = false;
 
-    public void StartMoving(PlayableNote PlayableNote, Vector3 StartPosition, Vector3 DestinationPosition, float MusicStartTime, float TravelTime, float FadeOutDuration, float DisabledAfterSpawnDuration)
+    public void StartMoving(PlayableNote PlayableNote, ChainManager ChainManager)
     {
-        this.StartPosition = StartPosition;
-        this.DestinationPosition = DestinationPosition;
+        this.StartPosition = ChainManager.StartPosition;
+        this.DestinationPosition = ChainManager.DestinationPosition;
 
-        this.MusicStartTime = MusicStartTime;
-        this.TravelTime = TravelTime;
+        this.MusicStartTime = ChainManager.MusicStartTime;
+        this.TravelTime = ChainManager.TravelTime;
         
         _playableNote = PlayableNote;
         SetColor(MusicNoteHelper.GetMusicNoteColor(PlayableNote.ExpectedNote));
+        SetLetterSprite(ChainManager.GetSpriteFromMusicNote(PlayableNote.ExpectedNote));
         this.EndTime = PlayableNote.OnTime + MusicStartTime;
 
-        this.FadeOutDuration = FadeOutDuration;
-        this.DisabledAfterSpawnDuration = DisabledAfterSpawnDuration;
+        this.FadeOutDuration = ChainManager.FadeOutDuration;
+        this.DisabledAfterSpawnDuration = ChainManager.DisabledAfterSpawnDuration;
         this.InitialScale = transform.localScale;
 
         this.Moving = true;
@@ -50,6 +51,11 @@ public class NoteGuideController : MonoBehaviour
     public void SetColor(Color Color)
     {
         GetComponent<SpriteRenderer>().color = Color;
+    }
+
+    public void SetLetterSprite(Sprite Sprite)
+    {
+        transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().sprite = Sprite;
     }
 
     // Start is called before the first frame update
@@ -78,7 +84,7 @@ public class NoteGuideController : MonoBehaviour
             {
                 _fadingOut = true;
                 float sizeMultiplicator = Mathf.Lerp(0f, 1f, TimeLeft / FadeOutDuration);
-                transform.transform.localScale = InitialScale * sizeMultiplicator;
+                //transform.transform.localScale = InitialScale * sizeMultiplicator;
             }
         }
     }
