@@ -237,7 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MIDIPlayer: {fileID: 910060630}
-  MidiFileName: Debut-Jerk-It-Out.mid
+  MidiFileName: Never-Gonna-Give-You-Up.mid
   TempoMultiplier: 1
   ChainManager: {fileID: 1794917375}
 --- !u!4 &818956728
@@ -577,3 +577,10 @@ MonoBehaviour:
   ChainSpeed: 5
   NoteGuidePrefab: {fileID: 4701351950942765936, guid: 1026a7fc932ccb24a8aa25ab26d504c0, type: 3}
   PortalLeftMargin: 1
+  SSprite: {fileID: 0}
+  DSprite: {fileID: 0}
+  FSprite: {fileID: 0}
+  SpaceSprite: {fileID: 0}
+  JSprite: {fileID: 0}
+  KSprite: {fileID: 0}
+  LSprite: {fileID: 0}

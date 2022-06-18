@@ -122,7 +122,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_10
+      name: A
       rect:
         serializedVersion: 2
         x: 413
@@ -143,7 +143,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_11
+      name: B
       rect:
         serializedVersion: 2
         x: 464
@@ -164,7 +164,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_12
+      name: C
       rect:
         serializedVersion: 2
         x: 1
@@ -185,7 +185,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_14
+      name: E
       rect:
         serializedVersion: 2
         x: 89
@@ -206,7 +206,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_15
+      name: F
       rect:
         serializedVersion: 2
         x: 132
@@ -227,7 +227,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_17
+      name: I
       rect:
         serializedVersion: 2
         x: 263
@@ -248,7 +248,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_21
+      name: M
       rect:
         serializedVersion: 2
         x: 405
@@ -269,7 +269,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_23
+      name: P
       rect:
         serializedVersion: 2
         x: 45
@@ -290,7 +290,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_26
+      name: T
       rect:
         serializedVersion: 2
         x: 219
@@ -311,7 +311,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_27
+      name: U
       rect:
         serializedVersion: 2
         x: 262
@@ -332,7 +332,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_28
+      name: V
       rect:
         serializedVersion: 2
         x: 306
@@ -353,7 +353,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_30
+      name: Z
       rect:
         serializedVersion: 2
         x: 1
@@ -626,7 +626,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_22
+      name: Y
       rect:
         serializedVersion: 2
         x: 438
@@ -668,7 +668,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_29
+      name: W
       rect:
         serializedVersion: 2
         x: 350
@@ -710,7 +710,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_0
+      name: X
       rect:
         serializedVersion: 2
         x: 395
@@ -731,7 +731,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_1
+      name: N
       rect:
         serializedVersion: 2
         x: 451
@@ -752,7 +752,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_2
+      name: R
       rect:
         serializedVersion: 2
         x: 133
@@ -773,7 +773,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_3
+      name: O
       rect:
         serializedVersion: 2
         x: 1
@@ -794,7 +794,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_4
+      name: H
       rect:
         serializedVersion: 2
         x: 219
@@ -815,7 +815,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_5
+      name: G
       rect:
         serializedVersion: 2
         x: 176
@@ -836,7 +836,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letters_6
+      name: SPACE
       rect:
         serializedVersion: 2
         x: 179
@@ -844,7 +844,7 @@ TextureImporter:
         width: 29
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -870,55 +870,55 @@ TextureImporter:
       letters_24: -1540875024
       letters_34: -1415275725
       3: -1606424355
-      letters_17: 723376417
       0: -2141697127
+      SPACE: -84959387
       letters_40: -1126770888
-      letters_0: 1091777667
+      P: -1138635270
+      Y: 150180853
       L: -2012908527
       6: 1391865405
+      H: 1637209554
       letters_16: -353792301
       S: 391804402
       5: 616663238
-      letters_26: -1220470756
       letters_38: 1514190275
-      letters_29: -801344513
       letters_37: -166958188
       ESPACE: 2075600212
-      letters_12: -1275388571
+      R: 1596024715
       D: 27400549
-      letters_10: 1772177337
       letters_31: 1514651174
-      letters_21: 1939025696
-      letters_22: 150180853
-      letters_27: -608427830
-      letters_23: -1138635270
-      letters_11: 327332487
-      letters_32: -1117176563
+      Z: -2002034299
       K: -94399801
-      letters_28: -302090930
+      letters_32: -1117176563
+      M: 1939025696
+      F: 816177545
       8: 1187821130
       letters_42: 49039659
-      letters_3: -1966011883
-      letters_15: 816177545
-      letters_5: 60999950
-      letters_1: -448997202
+      W: -801344513
       letters_43: -1907575447
       Q: -1457958556
+      C: -1275388571
       2: 1491807247
       J: 1324952446
       9: 150783673
       4: 1114461431
       letters_35: 1932629608
-      letters_14: 1757543648
-      letters_6: -84959387
+      E: 1757543648
+      X: 1091777667
+      G: 60999950
+      B: 327332487
+      U: -608427830
+      I: 723376417
+      O: -1966011883
       letters_36: 473583622
+      T: -1220470756
       1: -741989314
       letters_39: 1683344073
       letters_41: 838679276
+      A: 1772177337
       7: -284174541
-      letters_2: 1596024715
-      letters_4: 1637209554
-      letters_30: -2002034299
+      V: -302090930
+      N: -448997202
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

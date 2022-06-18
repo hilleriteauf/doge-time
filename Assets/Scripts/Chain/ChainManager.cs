@@ -17,17 +17,35 @@ public class ChainManager : MonoBehaviour
 
     public float TravelTime { get { return _travelTime; } }
 
+    public Vector3 StartPosition { get { return SpawnPoint.transform.position; } }
+    public Vector3 DestinationPosition { get { return Portal.transform.position; } }
+
+    public float FadeOutDuration { get { return _fadeOutDuration; } }
+
+    public float MusicStartTime { get { return _musicStartTime; } }
+
+    public float DisabledAfterSpawnDuration { get { return _disabledAfterSpawnDuration; } }
+
+    public Sprite SSprite;
+    public Sprite DSprite;
+    public Sprite FSprite;
+    public Sprite SpaceSprite;
+    public Sprite JSprite;
+    public Sprite KSprite;
+    public Sprite LSprite;
+
 
     private float Distance;
 
     private float _travelTime;
     
-    private float FadeOutDuration;
-    private float DisabledAfterSpawnDuration;
+    private float _fadeOutDuration;
+    private float _disabledAfterSpawnDuration;
 
     private PlayableNote[] PlayableNotes;
     private int PlayableNoteIndex;
-    private float MusicStartTime;
+
+    private float _musicStartTime;
     private bool started = false;
 
     private List<NoteGuideController> NoteGuides = new List<NoteGuideController>();
@@ -39,7 +57,7 @@ public class ChainManager : MonoBehaviour
         float GuideSpriteWidth = NoteGuidePrefab.GetComponent<SpriteRenderer>().bounds.size.x;
         float PortalSpriteWidth = Portal.GetComponent<SpriteRenderer>().bounds.size.x;
 
-        FadeOutDuration = (PortalSpriteWidth * 0.5f) / ChainSpeed;
+        _fadeOutDuration = (PortalSpriteWidth * 0.5f) / ChainSpeed;
 
         float RightScreenEdgeWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x;
         float LeftScreenEdgeWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0)).x;
@@ -47,7 +65,7 @@ public class ChainManager : MonoBehaviour
         Portal.transform.position = new Vector3(LeftScreenEdgeWorldPos + PortalSpriteWidth * 0.5f + PortalLeftMargin, Portal.transform.position.y, Portal.transform.position.z);
 
         SpawnPoint.transform.position = new Vector3(RightScreenEdgeWorldPos + GuideSpriteWidth * 0.5f, SpawnPoint.transform.position.y, SpawnPoint.transform.position.z);
-        DisabledAfterSpawnDuration = GuideSpriteWidth * 0.75f / ChainSpeed;
+        _disabledAfterSpawnDuration = GuideSpriteWidth * 0.75f / ChainSpeed;
 
         ChainObject = new GameObject("Chain");
         ChainObject.transform.SetParent(transform);
@@ -59,7 +77,7 @@ public class ChainManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (started && PlayableNoteIndex < PlayableNotes.Length && Time.time >= PlayableNotes[PlayableNoteIndex].OnTime + MusicStartTime - TravelTime)
+        if (started && PlayableNoteIndex < PlayableNotes.Length && Time.time >= PlayableNotes[PlayableNoteIndex].OnTime + _musicStartTime - TravelTime)
         {
             InstantiateNoteGuide(PlayableNotes[PlayableNoteIndex]);
             PlayableNoteIndex++;
@@ -71,14 +89,14 @@ public class ChainManager : MonoBehaviour
         GameObject NewNoteGuide = Instantiate(NoteGuidePrefab, SpawnPoint.transform.position, Quaternion.identity, ChainObject.transform);
         NoteGuideController NoteGuideController = NewNoteGuide.GetComponent<NoteGuideController>();
         NoteGuideController.SetColor(MusicNoteHelper.GetMusicNoteColor(PlayableNote.ExpectedNote));
-        NoteGuideController.StartMoving(PlayableNote, SpawnPoint.transform.position, Portal.transform.position, MusicStartTime, TravelTime, FadeOutDuration, DisabledAfterSpawnDuration);
+        NoteGuideController.StartMoving(PlayableNote, this);
         NoteGuides.Add(NoteGuideController);
     }
 
     public void StartChainGeneration(PlayableNote[] PlayableNotes, float MusicStartTime)
     {
         this.PlayableNotes = PlayableNotes;
-        this.MusicStartTime = MusicStartTime;
+        this._musicStartTime = MusicStartTime;
         started = true;
     }
 
@@ -93,5 +111,28 @@ public class ChainManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Sprite GetSpriteFromMusicNote(MusicNote MusicNote)
+    {
+        switch ((int)MusicNote / 10)
+        {
+            case 0:
+                return SSprite;
+            case 1:
+                return DSprite;
+            case 2:
+                return FSprite;
+            case 3:
+                return SpaceSprite;
+            case 4:
+                return JSprite;
+            case 5:
+                return KSprite;
+            case 6:
+                return LSprite;
+            default:
+                return null;
+        }
     }
 }
