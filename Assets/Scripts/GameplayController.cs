@@ -10,8 +10,12 @@ public class GameplayController : MonoBehaviour
     public string MidiFileName = "Debut-Jerk-It-Out.mid";
     public float TempoMultiplier = 1f;
 
+    public ChainManager ChainManager;
+
     private PlayableNote[] PlayableNotes;
     private int PlayableNotesIndex = 0;
+
+    private float MusicStartTime;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +33,19 @@ public class GameplayController : MonoBehaviour
             playableNote.PlacedNote = playableNote.ExpectedNote;
         }
 
+        ChainManager.Initialize();
+        float NoteGuideTravelTime = ChainManager.TravelTime;
+        Debug.Log($"Starting music in {NoteGuideTravelTime} seconds");
+        StartCoroutine(PlayMusicAfterDelay(NoteGuideTravelTime - 0.05f));
+
+        MusicStartTime = Time.time + NoteGuideTravelTime;
+
+        ChainManager.StartChainGeneration(PlayableNotes, NoteGuideTravelTime);
+    }
+
+    IEnumerator PlayMusicAfterDelay(float Delay)
+    {
+        yield return new WaitForSeconds(Delay);
         MIDIPlayer.PlaySong();
     }
 
