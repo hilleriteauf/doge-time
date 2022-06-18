@@ -7,6 +7,8 @@ public class RandomGeneration : MonoBehaviour
     private static List<GameObject> GeneratedFloatingNote = new List<GameObject>();
     private static Dictionary<string, int> NoteDispersion = new Dictionary<string, int>();
     public static int MaxNotesCount = 21;
+    public static GameObject SpawnPoint;
+    private float SpawnCoor;
     public enum NoteList
     {
         Do,
@@ -26,6 +28,16 @@ public class RandomGeneration : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        if (Camera.main==null) {Debug.LogError("Camera.main not found, failed to create edge colliders"); return;}
+
+        var cam = Camera.main;
+        if (!cam.orthographic) {Debug.LogError("Camera.main is not Orthographic, failed to create edge colliders"); return;}
+
+        SpawnCoor = ((Vector2)cam.ScreenToWorldPoint(new Vector3(0, 0, cam.nearClipPlane))).x;
+
+        Debug.Log(SpawnCoor);
+
         InitNoteDispersionTable();
         for (int i = 1; i < MaxNotesCount; i++)
         {   
@@ -150,10 +162,9 @@ public class RandomGeneration : MonoBehaviour
     }
 
     private void SpawnNote(GameObject toInstanciate) {
-        Vector3 objpos = new Vector3(Random.Range(-9.5f, 9.5f), Random.Range(-4.5f, 4.5f));
-        
+        Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(-4.5f, 4.5f));
+
         toInstanciate.GetComponent<Transform>().position = objpos;
-        toInstanciate.GetComponent<FloatingNote>().setDirection(new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)));
 
         Instantiate(toInstanciate);
     }
