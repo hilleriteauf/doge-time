@@ -84,7 +84,7 @@ public class NoteGuideController : MonoBehaviour
             {
                 _fadingOut = true;
                 float sizeMultiplicator = Mathf.Lerp(0f, 1f, TimeLeft / FadeOutDuration);
-                //transform.transform.localScale = InitialScale * sizeMultiplicator;
+                transform.transform.localScale = InitialScale * sizeMultiplicator;
             }
         }
     }
