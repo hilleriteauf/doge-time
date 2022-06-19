@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class DetectionSouris : MonoBehaviour
 {
-    private const float textEchelleBase = 1f;
     private const float textEchelle = 1.2f;
 
     // Start is called before the first frame update
@@ -22,13 +21,13 @@ public class DetectionSouris : MonoBehaviour
 
     public void SourisDetecte()
     {
-        GetComponent<Transform>().localScale = new Vector3(textEchelle, textEchelle, textEchelle);
+        GetComponent<Transform>().localScale = new Vector3(GetComponent<Transform>().localScale.x * textEchelle, GetComponent<Transform>().localScale.y * textEchelle, GetComponent<Transform>().localScale.z * textEchelle);
         GetComponent<TextMeshProUGUI>().color = Color.yellow;
     }
 
     public void SourisPlusDetecte()
     {
-        GetComponent<Transform>().localScale = new Vector3(textEchelleBase, textEchelleBase, textEchelleBase);
+        GetComponent<Transform>().localScale = new Vector3(GetComponent<Transform>().localScale.x / textEchelle, GetComponent<Transform>().localScale.y / textEchelle, GetComponent<Transform>().localScale.z / textEchelle);
         GetComponent<TextMeshProUGUI>().color = Color.white;
     }
 }
