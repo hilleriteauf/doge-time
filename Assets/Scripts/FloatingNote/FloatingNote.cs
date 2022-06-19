@@ -16,7 +16,7 @@ public class FloatingNote : MonoBehaviour
     // Modèle de note à suivre une fois placé
     private GameObject NoteGuide = null;
     private Vector3 StartPosition;
-    private float PlacedTime;
+    private float PlacedTime = -1f;
     private float ShootAnimationSpeed = 25f;
     private float ShootAnimationDuration;
     private Vector3 InitialScale;
@@ -62,8 +62,14 @@ public class FloatingNote : MonoBehaviour
 
     private void Update()
     {
-        if (this.NoteGuide != null)
+        if (PlacedTime != -1f)
         {
+            if (NoteGuide == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             float LivedTime = Time.time - PlacedTime;
             Vector3 NewPosition;
             if (LivedTime > ShootAnimationDuration + OvershootAnimationDuration)

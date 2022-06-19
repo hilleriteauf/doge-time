@@ -70,9 +70,8 @@ public class RandomGeneration : MonoBehaviour
         Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(-4.5f, 4.5f), -1);
 
 
-        GameObject toGenerate = Instantiate(toInstanciate);
+        GameObject toGenerate = Instantiate(toInstanciate, objpos, Quaternion.identity, transform);
 
-        toGenerate.GetComponent<Transform>().position = objpos;
         toGenerate.GetComponent<Transform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
         Note = NotSoRandomlyPicked();

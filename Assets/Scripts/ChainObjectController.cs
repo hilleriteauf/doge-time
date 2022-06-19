@@ -28,6 +28,12 @@ public class ChainObjectController : MonoBehaviour
     {
         if (ExpandAnimationStartTime != -1f)
         {
+            if (TargetB == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             float AnimationProgression = Mathf.Min((Time.time - ExpandAnimationStartTime) / ExpandAnimationDuration, 1f);
             float EasedProgression = Mathf.Sin((AnimationProgression * Mathf.PI) / 2f);
 

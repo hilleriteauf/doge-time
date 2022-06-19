@@ -122,7 +122,7 @@ public class GameplayController : MonoBehaviour
             
             if (PreviousBall != null)
             {
-                GameObject NewChainObject = Instantiate(ChainManager.ChainObjectPrefab, Ball.transform.position, Quaternion.identity, ChainManager.transform);
+                GameObject NewChainObject = Instantiate(ChainManager.ChainObjectPrefab, Ball.transform.position, Quaternion.identity, ChainManager.ChainObject.transform);
                 NewChainObject.GetComponent<ChainObjectController>().StartAnimation(Ball, PreviousBall);
             }
 

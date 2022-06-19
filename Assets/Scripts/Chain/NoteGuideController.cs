@@ -24,6 +24,7 @@ public class NoteGuideController : MonoBehaviour
     private Vector3 InitialScale;
 
     private PlayableNote _playableNote;
+    private ChainManager chainManager;
 
     
     private bool Moving = false;
@@ -43,6 +44,7 @@ public class NoteGuideController : MonoBehaviour
         this.TravelTime = ChainManager.TravelTime;
         
         _playableNote = PlayableNote;
+        this.chainManager = ChainManager;
         SetColor(MusicNoteHelper.GetMusicNoteColor(PlayableNote.ExpectedNote));
         SetLetterSprite(ChainManager.GetSpriteFromMusicNote(PlayableNote.ExpectedNote));
         this.EndTime = PlayableNote.OnTime + MusicStartTime;
@@ -75,6 +77,7 @@ public class NoteGuideController : MonoBehaviour
     {
         if (Moving)
         {
+
             if (DisabledAfterSpawn && Time.time - (EndTime - TravelTime) >= DisabledAfterSpawnDuration)
             {
                 _disabledAfterSpawn = false;
@@ -82,7 +85,14 @@ public class NoteGuideController : MonoBehaviour
 
             float TimeLeft = EndTime - Time.time;
 
-            if (TimeLeft <= 0) enabled = false;
+            if (TimeLeft <= 0)
+            {
+                NoteGuideController Previous = chainManager.GetPreviousNoteGuide(this);
+                if (Previous != null)
+                {
+                    Destroy(Previous.gameObject);
+                }
+            }
 
             transform.position = Vector3.Lerp(DestinationPosition, StartPosition, TimeLeft / TravelTime);
             
