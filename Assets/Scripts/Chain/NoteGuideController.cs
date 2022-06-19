@@ -17,7 +17,7 @@ public class NoteGuideController : MonoBehaviour
 
     private float MusicStartTime;
     private float TravelTime;
-    private float EndTime;
+    private float DestinationTime;
 
     private float DisabledAfterSpawnDuration;
     private float FadeOutDuration;
@@ -47,7 +47,7 @@ public class NoteGuideController : MonoBehaviour
         this.chainManager = ChainManager;
         SetColor(MusicNoteHelper.GetMusicNoteColor(PlayableNote.ExpectedNote));
         SetLetterSprite(ChainManager.GetSpriteFromMusicNote(PlayableNote.ExpectedNote));
-        this.EndTime = PlayableNote.OnTime + MusicStartTime;
+        this.DestinationTime = PlayableNote.OnTime + MusicStartTime;
 
         this.FadeOutDuration = ChainManager.FadeOutDuration;
         this.DisabledAfterSpawnDuration = ChainManager.DisabledAfterSpawnDuration;
@@ -78,12 +78,12 @@ public class NoteGuideController : MonoBehaviour
         if (Moving)
         {
 
-            if (DisabledAfterSpawn && Time.time - (EndTime - TravelTime) >= DisabledAfterSpawnDuration)
+            if (DisabledAfterSpawn && Time.time - (DestinationTime - TravelTime) >= DisabledAfterSpawnDuration)
             {
                 _disabledAfterSpawn = false;
             }
 
-            float TimeLeft = EndTime - Time.time;
+            float TimeLeft = DestinationTime - Time.time;
 
             if (TimeLeft <= 0)
             {

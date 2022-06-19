@@ -9,6 +9,7 @@ public class GameplayController : MonoBehaviour
     public MIDIPlayer MIDIPlayer;
     public string MidiFileName = "Debut-Jerk-It-Out.mid";
     public float TempoMultiplier = 1f;
+    public float TimeBeforeStart = 0.25f;
 
     public ChainManager ChainManager;
     public RandomGeneration FloatingBallManager;
@@ -30,11 +31,11 @@ public class GameplayController : MonoBehaviour
         ChainManager.Initialize();
         float NoteGuideTravelTime = ChainManager.TravelTime;
         Debug.Log($"Starting music in {NoteGuideTravelTime} seconds");
-        StartCoroutine(PlayMusicAfterDelay(NoteGuideTravelTime - 0.05f));
+        StartCoroutine(PlayMusicAfterDelay(NoteGuideTravelTime + TimeBeforeStart - 0.05f));
 
-        MusicStartTime = Time.time + NoteGuideTravelTime;
+        MusicStartTime = Time.time + NoteGuideTravelTime + TimeBeforeStart;
 
-        ChainManager.StartChainGeneration(PlayableNotes, NoteGuideTravelTime);
+        ChainManager.StartChainGeneration(PlayableNotes, MusicStartTime);
     }
 
     IEnumerator PlayMusicAfterDelay(float Delay)

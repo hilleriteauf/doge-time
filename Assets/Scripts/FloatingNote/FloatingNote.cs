@@ -13,7 +13,7 @@ public class FloatingNote : MonoBehaviour
     private Color NoteColor;
     private float Speed;
 
-    // Modèle de note à suivre une fois placé
+    // Modï¿½le de note ï¿½ suivre une fois placï¿½
     private GameObject NoteGuide = null;
     private Vector3 StartPosition;
     private float PlacedTime = -1f;

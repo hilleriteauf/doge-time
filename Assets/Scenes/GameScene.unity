@@ -454,8 +454,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MIDIPlayer: {fileID: 910060630}
-  MidiFileName: CurseOfTheBlackPearl.mid
+  MidiFileName: Never-Gonna-Give-You-Up-3-playable.mid
   TempoMultiplier: 1
+  TimeBeforeStart: 0.5
   ChainManager: {fileID: 1794917375}
   FloatingBallManager: {fileID: 2033245421}
   BonkController: {fileID: 752111805}
