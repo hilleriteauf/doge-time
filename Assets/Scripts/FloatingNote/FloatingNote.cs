@@ -81,7 +81,6 @@ public class FloatingNote : MonoBehaviour
             {
                 float AnimationProgression = (LivedTime - ShootAnimationDuration) / OvershootAnimationDuration;
                 float EasedProgression = Mathf.Sqrt(1 - Mathf.Pow(2f * AnimationProgression - 1f, 2));
-                Debug.Log($"Animation Progress: {AnimationProgression}, PositionProgression: {EasedProgression}");
                 NewPosition = Vector3.Lerp(NoteGuide.transform.position, NoteGuide.transform.position + Vector3.down * OvershootDistance, EasedProgression);
             }
             else
