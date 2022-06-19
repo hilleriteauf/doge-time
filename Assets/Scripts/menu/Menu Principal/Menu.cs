@@ -11,23 +11,25 @@ public class Menu : MonoBehaviour
     public GameObject textQuit;
 
     //Ecran avec (0,0) en bas à gauche
-    private const float longEcran = 1920;
-    private const float hautEcran = 1080;
+    private float longEcran = Screen.width;
+    private float hautEcran = Screen.height;
+
+    private Vector2 echelle;
 
     //Titre avec (0,0) au milieu
-    private const float longTitre = 900;
-    private const float hautTitre = 150;
+    private const int longTitre = 900;
+    private const int hautTitre = 150;
 
     private const int nbTitre = 4;
-    private const float espaceEntreTitre = (hautEcran - nbTitre * hautTitre) / (nbTitre + 1);
+    private float espaceEntreTitre;
 
     private float[] posY;
 
-    private const float posDepX = 0 - longTitre / 2;
-    private const float posMilX = longEcran / 2;
-    private const float posFinX = longEcran + longTitre / 2;
+    private float posDepX;
+    private float posMilX;
+    private float posFinX;
 
-    private float distDecalageTitre = 700;
+    private const float distDecalageTitre = 700;//Décalage pour avoir un effet de différentes vitesses pour l'animation
 
     List<TitreMenu> listTitre;
 
@@ -37,12 +39,20 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
+        echelle = new Vector3(longEcran / 1920, hautEcran / 1080, 1);
+
+        espaceEntreTitre = (hautEcran - nbTitre * hautTitre * echelle.y) / (nbTitre + 1);
+
+        posDepX = 0 - longTitre / 2;
+        posMilX = longEcran / 2;
+        posFinX = longEcran + longTitre / 2;
+
         posY = new float[nbTitre];
-        float auxPosY = espaceEntreTitre + hautTitre / 2; ;
+        float auxPosY = espaceEntreTitre + hautTitre * echelle.y / 2; ;
         for (int i = nbTitre - 1; i >= 0; i--)
         {
             posY[i] = auxPosY;
-            auxPosY += espaceEntreTitre + hautTitre;
+            auxPosY += espaceEntreTitre + hautTitre * echelle.y;
         }
 
         List<List<Vector2>> pos = new();
@@ -55,10 +65,10 @@ public class Menu : MonoBehaviour
             pos[i].Add(new Vector2(posFinX+i*distDecalageTitre, posY[i]));
         }
 
-        TitreMenu titrePlay =     new(textPlay, pos[0]);
-        TitreMenu titreOption =   new(textOption, pos[1]);
-        TitreMenu titreCredit =   new(textCredit, pos[2]);
-        TitreMenu titreQuit =     new(textQuit, pos[3]);
+        TitreMenu titrePlay =     new(textPlay, pos[0], this.echelle);
+        TitreMenu titreOption =   new(textOption, pos[1], this.echelle);
+        TitreMenu titreCredit =   new(textCredit, pos[2], this.echelle);
+        TitreMenu titreQuit =     new(textQuit, pos[3], this.echelle);
 
         listTitre = new List<TitreMenu>
         {
