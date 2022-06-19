@@ -17,7 +17,7 @@ public class TitreMenu
     public GameObject GObject { get => titre; set => titre = value; }
     public Trajectoire Traj { get => traj; set => traj = value; }
 
-    public TitreMenu(GameObject titre, List<Vector2> pos)
+    public TitreMenu(GameObject titre, List<Vector2> pos, Vector3 echelle)
     {
         this.titre = titre;
 
@@ -26,6 +26,7 @@ public class TitreMenu
         this.posFin = pos[2];
 
         this.titre.GetComponent<RectTransform>().position = this.posDep;
+        this.titre.GetComponent<RectTransform>().localScale = echelle;
 
         this.traj = new Trajectoire(this.posDep.x, this.posMil.x, dureeAnim, 1);
     }
