@@ -12,6 +12,7 @@ public class ChainManager : MonoBehaviour
     public float ChainSpeed = 1f;
 
     public GameObject NoteGuidePrefab;
+    public GameObject ChainObjectPrefab;
 
     public float PortalLeftMargin = 1f;
 
@@ -25,6 +26,8 @@ public class ChainManager : MonoBehaviour
     public float MusicStartTime { get { return _musicStartTime; } }
 
     public float DisabledAfterSpawnDuration { get { return _disabledAfterSpawnDuration; } }
+
+    public GameObject ChainObject { get { return _chainObject; } }
 
     public Sprite SSprite;
     public Sprite DSprite;
@@ -50,7 +53,7 @@ public class ChainManager : MonoBehaviour
 
     private List<NoteGuideController> NoteGuides = new List<NoteGuideController>();
 
-    private GameObject ChainObject;
+    private GameObject _chainObject;
 
     public void Initialize()
     {
@@ -67,8 +70,8 @@ public class ChainManager : MonoBehaviour
         SpawnPoint.transform.position = new Vector3(RightScreenEdgeWorldPos + GuideSpriteWidth * 0.5f, SpawnPoint.transform.position.y, SpawnPoint.transform.position.z);
         _disabledAfterSpawnDuration = GuideSpriteWidth * 0.75f / ChainSpeed;
 
-        ChainObject = new GameObject("Chain");
-        ChainObject.transform.SetParent(transform);
+        _chainObject = new GameObject("Chain");
+        _chainObject.transform.SetParent(transform);
 
         Distance = Vector2.Distance(Portal.transform.position, SpawnPoint.transform.position);
         _travelTime = Distance / ChainSpeed;
@@ -86,7 +89,7 @@ public class ChainManager : MonoBehaviour
 
     private void InstantiateNoteGuide(PlayableNote PlayableNote)
     {
-        GameObject NewNoteGuide = Instantiate(NoteGuidePrefab, SpawnPoint.transform.position, Quaternion.identity, ChainObject.transform);
+        GameObject NewNoteGuide = Instantiate(NoteGuidePrefab, SpawnPoint.transform.position, Quaternion.identity, _chainObject.transform);
         NoteGuideController NoteGuideController = NewNoteGuide.GetComponent<NoteGuideController>();
         NoteGuideController.SetColor(MusicNoteHelper.GetMusicNoteColor(PlayableNote.ExpectedNote));
         NoteGuideController.StartMoving(PlayableNote, this);
@@ -134,5 +137,15 @@ public class ChainManager : MonoBehaviour
             default:
                 return null;
         }
+    }
+
+    public NoteGuideController GetPreviousNoteGuide(NoteGuideController noteGuideController)
+    {
+        int index = NoteGuides.IndexOf(noteGuideController);
+        if (index == 0)
+        {
+            return null;
+        }
+        else return NoteGuides[index - 1];
     }
 }

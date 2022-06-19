@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    public Camera cam;
-
     public GameObject textPlay;
     public GameObject textOption;
     public GameObject textCredit;
@@ -35,6 +33,8 @@ public class Menu : MonoBehaviour
 
     private int anim;// 1 = départ, 2 = en attente, 3 = fin
 
+    private int choixScene;// 0 = Menu, 1 = Jeu, 2 = Option, 3 = Crédit, 4 = Quit
+
     void Start()
     {
         posY = new float[nbTitre];
@@ -55,10 +55,10 @@ public class Menu : MonoBehaviour
             pos[i].Add(new Vector2(posFinX+i*distDecalageTitre, posY[i]));
         }
 
-        TitreMenu titrePlay =     new(cam, textPlay, pos[0]);
-        TitreMenu titreOption =   new(cam, textOption, pos[1]);
-        TitreMenu titreCredit =   new(cam, textCredit, pos[2]);
-        TitreMenu titreQuit =     new(cam, textQuit, pos[3]);
+        TitreMenu titrePlay =     new(textPlay, pos[0]);
+        TitreMenu titreOption =   new(textOption, pos[1]);
+        TitreMenu titreCredit =   new(textCredit, pos[2]);
+        TitreMenu titreQuit =     new(textQuit, pos[3]);
 
         listTitre = new List<TitreMenu>
         {
@@ -69,6 +69,8 @@ public class Menu : MonoBehaviour
         };
 
         anim = 1;
+
+        choixScene = 0;
     }
 
     // Update is called once per frame
@@ -76,39 +78,69 @@ public class Menu : MonoBehaviour
     {
         switch (anim)
         {
-            case 1:
-                /*if (listTitre[0].Traj.AnimFini)
+            case 1://Arrivé des titres du menu
+                if (listTitre[0].Traj.AnimFini)
                     anim = 2;
                 else
-                {*/
-                Vector2 vAux;
-                for (int i = 0; i < listTitre.Count; i++)//MAJ des positions des titres
-                {
-                    vAux = MethodeStatic.getPositionRect(listTitre[i].GObject);
-                    vAux.x = listTitre[i].Traj.UpdatePos(listTitre[i].GObject.GetComponent<Transform>().position.x);
-                    listTitre[i].GObject.GetComponent<RectTransform>().position = vAux;
-                }
-                //}
+                    UpdateCoord();
                 break;
-            /*case 2:
-                if (true)
-                {
-                    anim = 3;
-                    for (int i = 0; i < listTitre.Count; i++)
-                        listTitre[i].Fin();//Animation de fin
-                }
+            case 2://Attente du choix du menu
                 break;
-            case 3:
+            case 3://Sortie des titres du menu
                 if (listTitre[0].Traj.AnimFini)
-                    anim = 1;//TODO envoyer vers la bonne scène
-                else
                 {
-                    for (int i = 0; i < listTitre.Count; i++)//MAJ des positions des titres
-                        listTitre[i].GObject.GetComponent<Transform>().position = listTitre[i].Traj.UpdatePos(listTitre[i].GObject.GetComponent<Transform>().position);
+                    if (choixScene == 4)
+                        Application.Quit();
+                    else
+                        SceneManager.LoadScene(choixScene);
                 }
-                break;*/
+                else
+                    UpdateCoord();
+                break;
             default:
-                throw new Exception("Erreur animation titre menu");
+                throw new Exception("Erreur animation titre menu : " + anim);
         }
+    }
+
+    public void UpdateCoord()
+    {
+        Vector2 vAux;
+        for (int i = 0; i < listTitre.Count; i++)//MAJ des positions des titres
+        {
+            vAux = MethodeStatic.getPositionRect(listTitre[i].GObject);
+            vAux.x = listTitre[i].Traj.UpdatePos(listTitre[i].GObject.GetComponent<Transform>().position.x);
+            listTitre[i].GObject.GetComponent<RectTransform>().position = vAux;
+        }
+    }
+
+    public void ActionPlay()
+    {
+        choixScene = 1;
+        AnimationSortie();
+    }
+
+    public void ActionOption()
+    {
+        choixScene = 2;
+        AnimationSortie();
+    }
+
+    public void ActionCredit()
+    {
+        choixScene = 3;
+        AnimationSortie();
+    }
+
+    public void ActionQuit()
+    {
+        choixScene = 4;
+        AnimationSortie();
+    }
+
+    public void AnimationSortie()
+    {
+        anim = 3;
+        for (int i = 0; i < listTitre.Count; i++)
+            listTitre[i].Fin();//Animation de fin
     }
 }
