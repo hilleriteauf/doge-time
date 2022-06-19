@@ -1687,6 +1687,7 @@ MonoBehaviour:
   ComboController: {fileID: 242446975}
   MusicNoteSpawnPoint: {fileID: 1474189719}
   MusicNotePrefab: {fileID: 5812053664757627680, guid: 6979a2df34711654fb5455aab156ddfc, type: 3}
+  TIOUTANNN: {fileID: 1811516596}
 --- !u!4 &818956728
 Transform:
   m_ObjectHideFlags: 0
@@ -3079,7 +3080,7 @@ GameObject:
   - component: {fileID: 1811516597}
   m_Layer: 0
   m_Name: End-music
-  m_TagString: Untagged
+  m_TagString: ImageFin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3440,6 +3441,8 @@ MonoBehaviour:
   FloatingNotePrefab: {fileID: 8635026968717702303, guid: 9fcd33f19b222c74e9d8dd4504e6e9cb, type: 3}
   UpperSpawnEdge: {fileID: 224808852}
   LowerSpawnEdge: {fileID: 1268989975}
+  MaxNotesCount: 150
+  SpawnPoint: {fileID: 0}
 --- !u!4 &2033245422
 Transform:
   m_ObjectHideFlags: 0
