@@ -39,9 +39,13 @@ public class GameplayController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MIDIPlayer.Gain = Sound.GetSound();
+        MidiFileName = EnvoiNiveau.GetNiveau();
+        TempoMultiplier = Vitesse.GetVitesse();
         Debug.Log("musique : " + Sound.GetSound());
         Debug.Log("niveau : " + EnvoiNiveau.GetNiveau());
         Debug.Log("vitesse : " + Vitesse.GetVitesse());
+
         MIDIPlayer.LoadSong(MidiFileName, TempoMultiplier);
         PlayableNotes = MIDIPlayer.PlayableNotes;
 
