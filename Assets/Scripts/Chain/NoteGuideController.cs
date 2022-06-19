@@ -109,7 +109,6 @@ public class NoteGuideController : MonoBehaviour
     {
         PlayableNote.PlacedNote = MusicNote;
         SetLetterSprite(null);
-        Debug.Log($"Expected: {PlayableNote.ExpectedNote}, Placed: {MusicNote}, Correct: {PlayableNote.ExpectedNote == MusicNote}");
         return ((int)PlayableNote.ExpectedNote / 10) == ((int)MusicNote / 10);
     }
 }

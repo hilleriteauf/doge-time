@@ -27,7 +27,7 @@ public class GameplayController : MonoBehaviour
     public GameObject MusicNotePrefab;
 
     private PlayableNote[] PlayableNotes;
-    private int PlayableNotesIndex;
+    private int PlayableNotesIndex = 0;
 
     private float MusicStartTime;
 
@@ -40,7 +40,7 @@ public class GameplayController : MonoBehaviour
     void Start()
     {
         MIDIPlayer.Gain = Sound.GetSound();
-        MidiFileName = EnvoiNiveau.GetNiveau();
+        if (EnvoiNiveau.GetNiveau() != null) MidiFileName = EnvoiNiveau.GetNiveau();
         TempoMultiplier = Vitesse.GetVitesse();
         Debug.Log("musique : " + Sound.GetSound());
         Debug.Log("niveau : " + EnvoiNiveau.GetNiveau());
@@ -183,7 +183,6 @@ public class GameplayController : MonoBehaviour
 
     void UpdateScore(bool WellPlaced)
     {
-        Debug.Log(WellPlaced);
 
         Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider));
 

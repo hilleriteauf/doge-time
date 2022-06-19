@@ -36,8 +36,6 @@ public class ScoreController : MonoBehaviour
     public void SetScore(int NewScore)
     {
         scoreAmount = NewScore;
-        Debug.Log("+ " + NewScore);
-
 
         int[] scoreAmountDigitsArray = GetDigitsArrayFromScoreAmount(scoreAmount);
 

@@ -43,7 +43,6 @@ public class ComboController : MonoBehaviour
     public void SetCombo(int newCombo)
     {
         comboAmout = newCombo;
-        Debug.Log("newCombo: " + newCombo);
 
         AmongUsGradinSpriteRenderer = AmongUsGradin.GetComponent<SpriteRenderer>();
 

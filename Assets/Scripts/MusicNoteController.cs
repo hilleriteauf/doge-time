@@ -37,7 +37,6 @@ public class MusicNoteController : MonoBehaviour
         if (StartTime != -1)
         {
             float progression = Time.time - StartTime;
-            Debug.Log($"Progression: {progression}");
 
             if (WellPlaced)
             {

@@ -32,7 +32,6 @@ public class RandomGeneration : MonoBehaviour
 
         SpawnCoor = ((Vector2)cam.ScreenToWorldPoint(new Vector3(0, 0, cam.nearClipPlane))).x;
         DespawnCoor =  ((Vector2)cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0, cam.nearClipPlane))).x;
-        Debug.Log(SpawnCoor);
 
         InitNoteDispersionTable();
         for (int i = 1; i < MaxNotesCount; i++)

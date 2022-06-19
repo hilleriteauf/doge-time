@@ -1560,6 +1560,7 @@ MonoBehaviour:
   TargetPosition: {fileID: 1720523806}
   BonkRotationDuration: 0.1
   BonkRotationAmplitude: 45
+  Astronaut: {fileID: 2116831009}
 --- !u!1 &774598219
 GameObject:
   m_ObjectHideFlags: 0
@@ -3406,7 +3407,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -3427,7 +3428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 0.1
   target: {fileID: 752111804}
-  speed: 0.8
+  MaxSpeed: 0.5
 --- !u!212 &2116831010
 SpriteRenderer:
   m_ObjectHideFlags: 0

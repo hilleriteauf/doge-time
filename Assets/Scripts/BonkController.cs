@@ -8,6 +8,8 @@ public class BonkController : MonoBehaviour
     public float BonkRotationDuration = 0.1f;
     public float BonkRotationAmplitude = 45;
 
+    public AstronautAnimation Astronaut;
+
     private Vector3 InitialScale;
     private float LastBonkTime = -1f;
 
@@ -31,5 +33,10 @@ public class BonkController : MonoBehaviour
         transform.localScale = Vector3.Scale(InitialScale, new Vector3(DestinationPosition.x < BallPosition.x ? 1f : -1f, 1, 1));
         transform.position = BallPosition - new Vector3(TargetPosition.localPosition.x * transform.localScale.x, TargetPosition.localPosition.y * transform.localScale.y, 0);
         LastBonkTime = Time.time;
+
+        if (Vector3.Distance(Astronaut.transform.position, TargetPosition.transform.position) <= 2f)
+        {
+            Astronaut.BonkBonk(Astronaut.transform.position - transform.position);
+        }
     }
 }
