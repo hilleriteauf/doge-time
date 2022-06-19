@@ -76,7 +76,7 @@ public class RandomGeneration : MonoBehaviour
 
         GameObject toGenerate = Instantiate(toInstanciate, objpos, Quaternion.identity, transform);
 
-        toGenerate.GetComponent<Transform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        toGenerate.GetComponent<Transform>().localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
         Note = NotSoRandomlyPicked();
         Color = MusicNoteHelper.GetMusicNoteColor(Note);

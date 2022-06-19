@@ -26,7 +26,7 @@ public class Combo : MonoBehaviour
     void Start()
     {
         
-        for (int i = 0; i <= 2; i++)
+        for (int i = 0; i <= characters.Length; i++)
         {
             characters[i].sprite = digits[0];
         }
