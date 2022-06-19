@@ -23,6 +23,7 @@ public class GameplayController : MonoBehaviour
     public ComboController ComboController;
 
     private PlayableNote[] PlayableNotes;
+    private int PlayableNotesIndex;
 
     private float MusicStartTime;
 
@@ -66,6 +67,8 @@ public class GameplayController : MonoBehaviour
             }
         }
 
+        HandlePlayedNotesAnimations();
+
         HandleInputs();
     }
 
@@ -105,6 +108,15 @@ public class GameplayController : MonoBehaviour
         {
             Debug.Log("L");
             PlaceNote(MusicNote.Si);
+        }
+    }
+
+    void HandlePlayedNotesAnimations()
+    {
+        if (PlayableNotesIndex < PlayableNotes.Length && Time.time >= PlayableNotes[PlayableNotesIndex].OnTime + MusicStartTime)
+        {
+            ComboController.MakePublicDanse();
+            PlayableNotesIndex++;
         }
     }
 
