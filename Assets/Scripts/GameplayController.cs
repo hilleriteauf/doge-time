@@ -34,6 +34,7 @@ public class GameplayController : MonoBehaviour
     {
         Debug.Log("musique : " + Sound.GetSound());
         Debug.Log("niveau : " + EnvoiNiveau.GetNiveau());
+        Debug.Log("vitesse : " + Vitesse.GetVitesse());
         MIDIPlayer.LoadSong(MidiFileName, TempoMultiplier);
         PlayableNotes = MIDIPlayer.PlayableNotes;
 
