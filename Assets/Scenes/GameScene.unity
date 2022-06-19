@@ -1680,11 +1680,13 @@ MonoBehaviour:
   ChainManager: {fileID: 1794917375}
   FloatingBallManager: {fileID: 2033245421}
   BonkController: {fileID: 752111805}
-  CheatMode: 0
+  CheatMode: 1
   ScoreByGoodPlacing: 10
   ComboDivider: 100
   ScoreController: {fileID: 242446974}
   ComboController: {fileID: 242446975}
+  MusicNoteSpawnPoint: {fileID: 1474189719}
+  MusicNotePrefab: {fileID: 5812053664757627680, guid: 6979a2df34711654fb5455aab156ddfc, type: 3}
 --- !u!4 &818956728
 Transform:
   m_ObjectHideFlags: 0
@@ -2472,7 +2474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 048aa2f743fb2764b8a2b6e1aac220da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 0.15
+  rotationSpeed: -0.15
 --- !u!212 &1474189718
 SpriteRenderer:
   m_ObjectHideFlags: 0

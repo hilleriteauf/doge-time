@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FloatingNote
   - Prefab
+  - VolumeMusique
   layers:
   - Default
   - TransparentFX
