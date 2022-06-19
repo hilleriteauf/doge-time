@@ -11,9 +11,11 @@ public class GameplayController : MonoBehaviour
     public float TempoMultiplier = 1f;
 
     public ChainManager ChainManager;
+    public RandomGeneration FloatingBallManager;
+    public BonkController BonkController;
+    public bool CheatMode = false;
 
     private PlayableNote[] PlayableNotes;
-    private int PlayableNotesIndex = 0;
 
     private float MusicStartTime;
 
@@ -24,14 +26,6 @@ public class GameplayController : MonoBehaviour
         PlayableNotes = MIDIPlayer.PlayableNotes;
 
         Debug.Log($"Playable note length : {PlayableNotes.Length}");
-
-        // Place les notes attendues
-        for (int i = 0; i < PlayableNotes.Length; i++)
-        {
-            PlayableNote playableNote = PlayableNotes[i];
-            //Debug.Log($"Note n°{i}, expected note: {playableNote.ExpectedNote}, octave: {playableNote.Octave}");
-            playableNote.PlacedNote = playableNote.ExpectedNote;
-        }
 
         ChainManager.Initialize();
         float NoteGuideTravelTime = ChainManager.TravelTime;
@@ -52,11 +46,90 @@ public class GameplayController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Affiche les notes dans la console lorsqu'elles sont jouées
-        while (MIDIPlayer.StartTime != -1 && PlayableNotesIndex < PlayableNotes.Length && PlayableNotes[PlayableNotesIndex].OnTime <= Time.time - MIDIPlayer.StartTime)
+
+        if (CheatMode)
         {
-            Debug.Log($"Playable Note {PlayableNotes[PlayableNotesIndex].PlacedNote} played at {PlayableNotes[PlayableNotesIndex].OnTime}");
-            PlayableNotesIndex++;
+            GameObject Ball = ChainManager.getNextEmptyNoteGuide();
+            if (Ball != null && Ball.transform.position.x < 0)
+            {
+                PlaceNote((MusicNote)(((int)Ball.GetComponent<NoteGuideController>().PlayableNote.ExpectedNote / 10) * 10));
+            }
+        }
+
+        HandleInputs();
+    }
+
+    void HandleInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("S");
+            PlaceNote(MusicNote.Do);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Debug.Log("D");
+            PlaceNote(MusicNote.Re);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("F");
+            PlaceNote(MusicNote.Mi);
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Space");
+            PlaceNote(MusicNote.Fa);
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Debug.Log("J");
+            PlaceNote(MusicNote.Sol);
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Debug.Log("K");
+            PlaceNote(MusicNote.La);
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("L");
+            PlaceNote(MusicNote.Si);
+        }
+    }
+
+    void PlaceNote(MusicNote MusicNote)
+    {
+
+        GameObject EmptyNoteGuide = ChainManager.getNextEmptyNoteGuide();
+        
+        if (EmptyNoteGuide == null)
+        {
+            return;
+        }
+
+        EmptyNoteGuide.GetComponent<NoteGuideController>().PlaceNote(MusicNote);
+
+        GameObject Ball = FloatingBallManager.GetBallToPlace(MusicNote, EmptyNoteGuide.transform.position);
+        if (Ball != null)
+        {
+            Ball.GetComponent<FloatingNote>().Place(EmptyNoteGuide);
+            EmptyNoteGuide.GetComponent<NoteGuideController>().PlacedNote = Ball;
+            BonkController.Bonk(Ball.transform.position, EmptyNoteGuide.transform.position);
+
+            NoteGuideController PreviousNoteGuide = ChainManager.GetPreviousNoteGuide(EmptyNoteGuide.GetComponent<NoteGuideController>());
+            GameObject PreviousBall = PreviousNoteGuide == null ? null : PreviousNoteGuide.PlacedNote;
+            
+            if (PreviousBall != null)
+            {
+                GameObject NewChainObject = Instantiate(ChainManager.ChainObjectPrefab, Ball.transform.position, Quaternion.identity, ChainManager.ChainObject.transform);
+                NewChainObject.GetComponent<ChainObjectController>().StartAnimation(Ball, PreviousBall);
+            }
+
+        }
+        else
+        {
+            Debug.LogWarning($"Not enouth ball for note {MusicNote} !");
         }
     }
 }
