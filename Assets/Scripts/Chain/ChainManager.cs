@@ -12,6 +12,7 @@ public class ChainManager : MonoBehaviour
     public float ChainSpeed = 1f;
 
     public GameObject NoteGuidePrefab;
+    public GameObject ChainObjectPrefab;
 
     public float PortalLeftMargin = 1f;
 
@@ -134,5 +135,15 @@ public class ChainManager : MonoBehaviour
             default:
                 return null;
         }
+    }
+
+    public NoteGuideController GetPreviousNoteGuide(NoteGuideController noteGuideController)
+    {
+        int index = NoteGuides.IndexOf(noteGuideController);
+        if (index == 0)
+        {
+            return null;
+        }
+        else return NoteGuides[index - 1];
     }
 }

@@ -423,8 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MIDIPlayer: {fileID: 910060630}
-  MidiFileName: Rocky.mid
-  TempoMultiplier: 1
+  MidiFileName: CurseOfTheBlackPearl.mid
+  TempoMultiplier: 0.5
   ChainManager: {fileID: 1794917375}
   FloatingBallManager: {fileID: 2033245421}
   BonkController: {fileID: 752111805}
@@ -796,10 +796,11 @@ MonoBehaviour:
   SpawnPoint: {fileID: 1406134817}
   ChainSpeed: 5
   NoteGuidePrefab: {fileID: 4701351950942765936, guid: 1026a7fc932ccb24a8aa25ab26d504c0, type: 3}
+  ChainObjectPrefab: {fileID: 5147981439828386799, guid: c25d2269be6a49f43846cc995c89c464, type: 3}
   PortalLeftMargin: 1
   SSprite: {fileID: 391804402, guid: 61fbbf8964984884c9a0a75678d9ee2d, type: 3}
   DSprite: {fileID: 27400549, guid: 61fbbf8964984884c9a0a75678d9ee2d, type: 3}
-  FSprite: {fileID: 816177545, guid: 61fbbf8964984884c9a0a75678d9ee2d, type: 3}
+  FSprite: {fileID: 1779028840, guid: 61fbbf8964984884c9a0a75678d9ee2d, type: 3}
   SpaceSprite: {fileID: -84959387, guid: 61fbbf8964984884c9a0a75678d9ee2d, type: 3}
   JSprite: {fileID: 1324952446, guid: 61fbbf8964984884c9a0a75678d9ee2d, type: 3}
   KSprite: {fileID: -94399801, guid: 61fbbf8964984884c9a0a75678d9ee2d, type: 3}

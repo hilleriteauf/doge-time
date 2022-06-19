@@ -10,6 +10,8 @@ public class NoteGuideController : MonoBehaviour
     public bool DisabledAfterSpawn { get { return _disabledAfterSpawn; } }
     public float CurrentSize { get { return _currentSize; } }
 
+    public GameObject PlacedNote;
+
     private Vector3 StartPosition;
     private Vector3 DestinationPosition;
 
@@ -22,6 +24,7 @@ public class NoteGuideController : MonoBehaviour
     private Vector3 InitialScale;
 
     private PlayableNote _playableNote;
+
     
     private bool Moving = false;
 

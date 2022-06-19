@@ -50,7 +50,7 @@ public class GameplayController : MonoBehaviour
         if (CheatMode)
         {
             GameObject Ball = ChainManager.getNextEmptyNoteGuide();
-            if (Ball != null)
+            if (Ball != null && Ball.transform.position.x < 0)
             {
                 PlaceNote((MusicNote)(((int)Ball.GetComponent<NoteGuideController>().PlayableNote.ExpectedNote / 10) * 10));
             }
@@ -114,7 +114,18 @@ public class GameplayController : MonoBehaviour
         if (Ball != null)
         {
             Ball.GetComponent<FloatingNote>().Place(EmptyNoteGuide);
+            EmptyNoteGuide.GetComponent<NoteGuideController>().PlacedNote = Ball;
             BonkController.Bonk(Ball.transform.position, EmptyNoteGuide.transform.position);
+
+            NoteGuideController PreviousNoteGuide = ChainManager.GetPreviousNoteGuide(EmptyNoteGuide.GetComponent<NoteGuideController>());
+            GameObject PreviousBall = PreviousNoteGuide == null ? null : PreviousNoteGuide.PlacedNote;
+            
+            if (PreviousBall != null)
+            {
+                GameObject NewChainObject = Instantiate(ChainManager.ChainObjectPrefab, Ball.transform.position, Quaternion.identity, ChainManager.transform);
+                NewChainObject.GetComponent<ChainObjectController>().StartAnimation(Ball, PreviousBall);
+            }
+
         }
         else
         {
