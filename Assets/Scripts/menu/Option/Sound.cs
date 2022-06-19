@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,5 +28,7 @@ public class Sound : MonoBehaviour
     public void SetSound()
     {
         sound = GetComponent<Scrollbar>().value;
+        GameObject text = GameObject.FindGameObjectsWithTag("VolumeMusique")[0];
+        text.GetComponent<TextMeshProUGUI>().text = System.Convert.ToString((int)(sound*100)) + " %";
     }
 }
