@@ -13,7 +13,7 @@ public class FloatingNote : MonoBehaviour
     private Color NoteColor;
     private float Speed;
 
-    // Modèle de note à suivre une fois placé
+    // Modï¿½le de note ï¿½ suivre une fois placï¿½
     private GameObject NoteGuide = null;
     private Vector3 StartPosition;
     private float PlacedTime = -1f;
@@ -75,6 +75,7 @@ public class FloatingNote : MonoBehaviour
             if (LivedTime > ShootAnimationDuration + OvershootAnimationDuration)
             {
                 NewPosition = NoteGuide.transform.position;
+                transform.localScale = Vector3.one * 0.5f * NoteGuide.GetComponent<NoteGuideController>().CurrentSize;
             }
             else if (LivedTime > ShootAnimationDuration)
             {
@@ -85,11 +86,11 @@ public class FloatingNote : MonoBehaviour
             }
             else
             {
+                transform.localScale = Vector3.Lerp(new Vector3(0.2f, 0.2f, 0.2f), new Vector3(0.5f, 0.5f, 0.5f), LivedTime / ShootAnimationDuration);
                 NewPosition = Vector3.Lerp(StartPosition, NoteGuide.transform.position, LivedTime / ShootAnimationDuration) + Vector3.back;
             }
             NewPosition.z = -1f;
             transform.position = NewPosition;
-            transform.localScale = InitialScale * NoteGuide.GetComponent<NoteGuideController>().CurrentSize;
         }
     }
 }

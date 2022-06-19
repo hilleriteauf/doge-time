@@ -23,7 +23,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         digits = combo.digits;
-        for (int i = 0; i <= 2; i++)
+        for (int i = 0; i <= characters.Length; i++)
         {
             characters[i].sprite = digits[0];
         }

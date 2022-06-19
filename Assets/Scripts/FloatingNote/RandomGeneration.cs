@@ -5,6 +5,10 @@ using UnityEngine;
 public class RandomGeneration : MonoBehaviour
 {
     public GameObject FloatingNotePrefab;
+
+    public Transform UpperSpawnEdge;
+    public Transform LowerSpawnEdge;
+
     private static List<GameObject> GeneratedFloatingNote = new List<GameObject>();
     private static int[] NoteDispersion = new int[7];
     public static int MaxNotesCount = 150;
@@ -67,12 +71,12 @@ public class RandomGeneration : MonoBehaviour
 
     private GameObject GenerateNote(GameObject toInstanciate) 
     {
-        Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(-4.5f, 4.5f), -1);
+        Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(LowerSpawnEdge.position.y, UpperSpawnEdge.position.y), -1);
 
 
         GameObject toGenerate = Instantiate(toInstanciate, objpos, Quaternion.identity, transform);
 
-        toGenerate.GetComponent<Transform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        toGenerate.GetComponent<Transform>().localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
         Note = NotSoRandomlyPicked();
         Color = MusicNoteHelper.GetMusicNoteColor(Note);
