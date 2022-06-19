@@ -39,7 +39,7 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
-        echelle = new Vector3(longEcran / 1920, hautEcran / 1080, 1);
+        echelle = MethodeStatic.getScale();
 
         espaceEntreTitre = (hautEcran - nbTitre * hautTitre * echelle.y) / (nbTitre + 1);
 
