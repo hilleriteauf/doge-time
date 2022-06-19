@@ -35,18 +35,16 @@ public class ComboController : MonoBehaviour
         //Simle.StonePickUp += AddScoreAndDisplayIt;
     }
 
+    public void MakePublicDanse()
+    {
+        PublicSprite.transform.Translate(Vector3.up*30 * Time.deltaTime);
+    }
 
     public void SetCombo(int newCombo)
     {
         comboAmout = newCombo;
-        Debug.Log("newCombo: " + newCombo);
 
         AmongUsGradinSpriteRenderer = AmongUsGradin.GetComponent<SpriteRenderer>();
-
-        if (comboAmout > 0)
-        {
-            PublicSprite.transform.Translate(Vector3.up*30 * Time.deltaTime);
-        }
 
         if (comboAmout < 50) {
             AmongUsGradinSpriteRenderer.sprite = AmongUsGradinSprites[0];

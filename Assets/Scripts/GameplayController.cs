@@ -2,6 +2,7 @@ using Assets.Scripts.MIDI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameplayController : MonoBehaviour
 {
@@ -22,16 +23,34 @@ public class GameplayController : MonoBehaviour
     public ScoreController ScoreController;
     public ComboController ComboController;
 
+    public Transform MusicNoteSpawnPoint;
+    public GameObject MusicNotePrefab;
+
+    public GameObject TIOUTANNN;
+
     private PlayableNote[] PlayableNotes;
+    private int PlayableNotesIndex = 0;
 
     private float MusicStartTime;
 
     private int Combo = 0;
     private int Score = 0;
 
+    private const int choixSceneMenu = 0;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        TIOUTANNN.SetActive(false);
+
+        MIDIPlayer.Gain = Sound.GetSound();
+        if (EnvoiNiveau.GetNiveau() != null) MidiFileName = EnvoiNiveau.GetNiveau();
+        TempoMultiplier = Vitesse.GetVitesse();
+        Debug.Log("musique : " + Sound.GetSound());
+        Debug.Log("niveau : " + EnvoiNiveau.GetNiveau());
+        Debug.Log("vitesse : " + Vitesse.GetVitesse());
+
         MIDIPlayer.LoadSong(MidiFileName, TempoMultiplier);
         PlayableNotes = MIDIPlayer.PlayableNotes;
 
@@ -65,6 +84,8 @@ public class GameplayController : MonoBehaviour
                 PlaceNote((MusicNote)(((int)Ball.GetComponent<NoteGuideController>().PlayableNote.ExpectedNote / 10) * 10));
             }
         }
+
+        HandlePlayedNotesAnimations();
 
         HandleInputs();
     }
@@ -106,6 +127,31 @@ public class GameplayController : MonoBehaviour
             Debug.Log("L");
             PlaceNote(MusicNote.Si);
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("retour menu");
+            SceneManager.LoadScene(choixSceneMenu);
+        }
+    }
+
+    void HandlePlayedNotesAnimations()
+    {
+        if (PlayableNotesIndex < PlayableNotes.Length && Time.time >= PlayableNotes[PlayableNotesIndex].OnTime + MusicStartTime)
+        {
+
+            if (PlayableNotes[PlayableNotesIndex].PlacedNote != MusicNote.Null)
+            {
+                ComboController.MakePublicDanse();
+
+                GameObject newMusicNote = Instantiate(MusicNotePrefab, MusicNoteSpawnPoint.position, Quaternion.identity, transform);
+                newMusicNote.GetComponent<MusicNoteController>().StartAnimation(PlayableNotes[PlayableNotesIndex].PlacedNote, ((int)PlayableNotes[PlayableNotesIndex].PlacedNote/10) == ((int)PlayableNotes[PlayableNotesIndex].ExpectedNote / 10));
+            }
+
+            PlayableNotesIndex++;
+
+            if (PlayableNotesIndex == PlayableNotes.Length)
+                TIOUTANNN.SetActive(true);
+        }
     }
 
     void PlaceNote(MusicNote MusicNote)
@@ -145,7 +191,6 @@ public class GameplayController : MonoBehaviour
 
     void UpdateScore(bool WellPlaced)
     {
-        Debug.Log(WellPlaced);
 
         Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider));
 
