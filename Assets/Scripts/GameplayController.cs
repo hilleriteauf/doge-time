@@ -16,9 +16,18 @@ public class GameplayController : MonoBehaviour
     public BonkController BonkController;
     public bool CheatMode = false;
 
+    public int ScoreByGoodPlacing = 10;
+    public int ComboDivider = 100;
+
+    public ScoreController ScoreController;
+    public ComboController ComboController;
+
     private PlayableNote[] PlayableNotes;
 
     private float MusicStartTime;
+
+    private int Combo = 0;
+    private int Score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -109,7 +118,7 @@ public class GameplayController : MonoBehaviour
             return;
         }
 
-        EmptyNoteGuide.GetComponent<NoteGuideController>().PlaceNote(MusicNote);
+        UpdateScore(EmptyNoteGuide.GetComponent<NoteGuideController>().PlaceNote(MusicNote));
 
         GameObject Ball = FloatingBallManager.GetBallToPlace(MusicNote, EmptyNoteGuide.transform.position);
         if (Ball != null)
@@ -132,5 +141,24 @@ public class GameplayController : MonoBehaviour
         {
             Debug.LogWarning($"Not enouth ball for note {MusicNote} !");
         }
+    }
+
+    void UpdateScore(bool WellPlaced)
+    {
+        Debug.Log(WellPlaced);
+
+        Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider));
+
+        if (WellPlaced)
+        {
+            Combo++;
+        }
+        else
+        {
+            Combo = 0;
+        }
+
+        ScoreController.SetScore(Score);
+        ComboController.SetCombo(Combo);
     }
 }

@@ -508,9 +508,9 @@ MonoBehaviour:
   - {fileID: 271053082}
   - {fileID: 1110343326}
   - {fileID: 310989336}
-  gradin: {fileID: 1513517146}
-  publicSprite: {fileID: 471503170}
-  sprites:
+  PublicSprite: {fileID: 471503170}
+  AmongUsGradin: {fileID: 1416515594}
+  AmongUsGradinSprites:
   - {fileID: 21300000, guid: a2700fbde5082a54faad1d8b67cbbbe5, type: 3}
   - {fileID: 21300000, guid: 77471c0a223a37e4f81b46a86eaa19b1, type: 3}
   - {fileID: 21300000, guid: 46b8395144b9f76409e0292ba8536924, type: 3}
@@ -1680,7 +1680,11 @@ MonoBehaviour:
   ChainManager: {fileID: 1794917375}
   FloatingBallManager: {fileID: 2033245421}
   BonkController: {fileID: 752111805}
-  CheatMode: 1
+  CheatMode: 0
+  ScoreByGoodPlacing: 10
+  ComboDivider: 100
+  ScoreController: {fileID: 242446974}
+  ComboController: {fileID: 242446975}
 --- !u!4 &818956728
 Transform:
   m_ObjectHideFlags: 0
