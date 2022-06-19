@@ -2,6 +2,7 @@ using Assets.Scripts.MIDI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameplayController : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class GameplayController : MonoBehaviour
 
     private int Combo = 0;
     private int Score = 0;
+
+    private const int choixSceneMenu = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -114,6 +117,11 @@ public class GameplayController : MonoBehaviour
         {
             Debug.Log("L");
             PlaceNote(MusicNote.Si);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("retour menu");
+            SceneManager.LoadScene(choixSceneMenu);
         }
     }
 
