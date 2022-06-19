@@ -35,7 +35,8 @@ public class Menu : MonoBehaviour
 
     private int anim;// 1 = départ, 2 = en attente, 3 = fin
 
-    private int choixScene;// 0 = Menu, 1 = Jeu, 2 = Option, 3 = Crédit, 4 = Quit
+    private int choixScene;// 0 = Menu, 1 = Choix niveau, 2 = Option, 3 = Crédit, 4 = Jeu, 5 = Quit
+    private const int choixSceneQuit = 5;
 
     void Start()
     {
@@ -99,7 +100,7 @@ public class Menu : MonoBehaviour
             case 3://Sortie des titres du menu
                 if (listTitre[0].Traj.AnimFini)
                 {
-                    if (choixScene == 4)
+                    if (choixScene == choixSceneQuit)
                         Application.Quit();
                     else
                         SceneManager.LoadScene(choixScene);
@@ -143,7 +144,7 @@ public class Menu : MonoBehaviour
 
     public void ActionQuit()
     {
-        choixScene = 4;
+        choixScene = choixSceneQuit;
         AnimationSortie();
     }
 
