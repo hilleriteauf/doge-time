@@ -37,7 +37,7 @@ public class RandomGeneration : MonoBehaviour
         InitNoteDispersionTable();
         for (int i = 1; i < MaxNotesCount; i++)
         {   
-            GeneratedFloatingNote.Add(GenerateNote(FloatingNotePrefab));
+            GeneratedFloatingNote.Add(GenerateNote(FloatingNotePrefab, true));
         }
     }
 
@@ -69,9 +69,16 @@ public class RandomGeneration : MonoBehaviour
         }
     }
 
-    private GameObject GenerateNote(GameObject toInstanciate) 
+    private GameObject GenerateNote(GameObject toInstanciate, bool ToStart = false) 
     {
-        Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(LowerSpawnEdge.position.y, UpperSpawnEdge.position.y), -1);
+        Vector3 objpos;
+        if (ToStart)
+        {
+            objpos = new Vector3(Random.Range(SpawnCoor, 9.5f), Random.Range(LowerSpawnEdge.position.y, UpperSpawnEdge.position.y), -1);
+        } else
+        {
+            objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(LowerSpawnEdge.position.y, UpperSpawnEdge.position.y), -1);
+        }
 
 
         GameObject toGenerate = Instantiate(toInstanciate, objpos, Quaternion.identity, transform);
