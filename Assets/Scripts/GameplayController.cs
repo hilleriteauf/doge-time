@@ -26,6 +26,8 @@ public class GameplayController : MonoBehaviour
     public Transform MusicNoteSpawnPoint;
     public GameObject MusicNotePrefab;
 
+    public GameObject TIOUTANNN;
+
     private PlayableNote[] PlayableNotes;
     private int PlayableNotesIndex = 0;
 
@@ -39,6 +41,9 @@ public class GameplayController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        TIOUTANNN.SetActive(false);
+
         MIDIPlayer.Gain = Sound.GetSound();
         if (EnvoiNiveau.GetNiveau() != null) MidiFileName = EnvoiNiveau.GetNiveau();
         TempoMultiplier = Vitesse.GetVitesse();
@@ -143,6 +148,9 @@ public class GameplayController : MonoBehaviour
             }
 
             PlayableNotesIndex++;
+
+            if (PlayableNotesIndex == PlayableNotes.Length)
+                TIOUTANNN.SetActive(true);
         }
     }
 

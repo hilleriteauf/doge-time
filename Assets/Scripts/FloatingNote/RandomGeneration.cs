@@ -9,10 +9,10 @@ public class RandomGeneration : MonoBehaviour
     public Transform UpperSpawnEdge;
     public Transform LowerSpawnEdge;
 
-    private static List<GameObject> GeneratedFloatingNote = new List<GameObject>();
-    private static int[] NoteDispersion = new int[7];
-    public static int MaxNotesCount = 150;
-    public static GameObject SpawnPoint;
+    private List<GameObject> GeneratedFloatingNote = new List<GameObject>();
+    private int[] NoteDispersion = new int[7];
+    public int MaxNotesCount = 150;
+    public GameObject SpawnPoint;
     private float SpawnCoor;
     private float DespawnCoor;
 
