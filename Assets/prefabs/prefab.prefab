@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4376555092867727128}
   - component: {fileID: 4376555092867727131}
   - component: {fileID: 4376555092867727130}
-  - component: {fileID: 4376555092867727129}
+  - component: {fileID: 2625350371619897618}
   m_Layer: 5
   m_Name: prefab
   m_TagString: Prefab
@@ -154,9 +154,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4376555092867727129}
-          m_TargetAssemblyTypeName: ChoixNiveau, Assembly-CSharp
-          m_MethodName: choixNiveau
+        - m_Target: {fileID: 2625350371619897618}
+          m_TargetAssemblyTypeName: EnvoiNiveau, Assembly-CSharp
+          m_MethodName: SetNiveau
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -166,7 +166,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &4376555092867727129
+--- !u!114 &2625350371619897618
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,6 +175,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4376555092867727127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68c75a8528299ff48b4d044a54735664, type: 3}
+  m_Script: {fileID: 11500000, guid: 89c502ec1bb902f4fb5dccce9b9d4f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
