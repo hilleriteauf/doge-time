@@ -12,9 +12,4 @@ public static class MethodeStatic
     {
         return new Vector3(Screen.width / 1920f, Screen.height / 1080f, 1);
     }
-
-    public static string getNameMidi(FileInfo fileInfo)
-    {
-        return Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(fileInfo.Name));
-    }
 }
