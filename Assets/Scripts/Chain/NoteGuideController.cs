@@ -8,6 +8,7 @@ public class NoteGuideController : MonoBehaviour
     public PlayableNote PlayableNote { get { return _playableNote; } }
     public bool FadingOut { get { return _fadingOut; } }
     public bool DisabledAfterSpawn { get { return _disabledAfterSpawn; } }
+    public float CurrentSize { get { return _currentSize; } }
 
     private Vector3 StartPosition;
     private Vector3 DestinationPosition;
@@ -27,6 +28,8 @@ public class NoteGuideController : MonoBehaviour
     private bool _fadingOut = false;
 
     private bool _disabledAfterSpawn = false;
+
+    private float _currentSize = 1f;
 
     public void StartMoving(PlayableNote PlayableNote, ChainManager ChainManager)
     {
@@ -83,9 +86,15 @@ public class NoteGuideController : MonoBehaviour
             if (TimeLeft <= FadeOutDuration)
             {
                 _fadingOut = true;
-                float sizeMultiplicator = Mathf.Lerp(0f, 1f, TimeLeft / FadeOutDuration);
-                transform.transform.localScale = InitialScale * sizeMultiplicator;
+                _currentSize = Mathf.Lerp(0f, 1f, TimeLeft / FadeOutDuration);
+                transform.localScale = InitialScale * _currentSize;
             }
         }
+    }
+
+    public void PlaceNote(MusicNote MusicNote)
+    {
+        PlayableNote.PlacedNote = MusicNote;
+        SetLetterSprite(null);
     }
 }
