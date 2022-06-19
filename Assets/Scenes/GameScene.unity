@@ -1680,7 +1680,7 @@ MonoBehaviour:
   ChainManager: {fileID: 1794917375}
   FloatingBallManager: {fileID: 2033245421}
   BonkController: {fileID: 752111805}
-  CheatMode: 1
+  CheatMode: 0
   ScoreByGoodPlacing: 10
   ComboDivider: 100
   ScoreController: {fileID: 242446974}
