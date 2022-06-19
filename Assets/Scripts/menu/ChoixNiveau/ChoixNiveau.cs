@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class Sound : MonoBehaviour
+public class ChoixNiveau : MonoBehaviour
 {
-    public static float sound = 0.5f;
+    private const int choixSceneJeu = 4;
 
     // Start is called before the first frame update
     void Start()
@@ -19,13 +19,8 @@ public class Sound : MonoBehaviour
         
     }
 
-    public static float GetSound()
+    public void choixNiveau()
     {
-        return sound;
-    }
-
-    public void SetSound()
-    {
-        sound = GetComponent<Scrollbar>().value;
+        SceneManager.LoadScene(choixSceneJeu);
     }
 }

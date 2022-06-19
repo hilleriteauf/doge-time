@@ -35,7 +35,7 @@ public class Score : MonoBehaviour
 
     public void AddScoreAndDisplayIt(int randomScoreValue)
     {
-        scoreAmount += randomScoreValue;
+        scoreAmount = randomScoreValue;
         Debug.Log("+ " + randomScoreValue);
 
 
@@ -122,6 +122,7 @@ public class Score : MonoBehaviour
         return listOfInts.ToArray();
     }
 
+    /*
     void Update()
     {
         if (Input.GetKeyDown("e"))
@@ -129,6 +130,7 @@ public class Score : MonoBehaviour
             AddScoreAndDisplayIt(1000);
         }
     }
+    */
 
 
     // Update is called once per frame
