@@ -28,9 +28,13 @@ public class Vitesse : MonoBehaviour
         value = GetComponent<Scrollbar>().value;
         if (value < 0.33f)
             vitesse = 0.5f;
-        else if (value > 0.66f)
-            vitesse = 1f;
         else
-            vitesse = 0.75f;
+        {
+            if (value > 0.66f)
+                vitesse = 1f;
+            else
+                vitesse = 0.75f;
+        }
+        Debug.Log("v_tesse : " + vitesse);
     }
 }
