@@ -23,11 +23,10 @@ public class ChoixNiveauController : MonoBehaviour
 
         espaceEntreTexte = (Screen.width - nbNivParLig * tailleText.x) / (nbNivParLig + 1);
 
-        DirectoryInfo infoFolder = new DirectoryInfo("Assets/Resources/Midis");
-        FileInfo[] tabFileAux = infoFolder.GetFiles();
-
-        for (int i = 0; i < tabFileAux.Length; i += 2)
-            listText.Add(MethodeStatic.getNameMidi(tabFileAux[i]));
+        Object[] tabFileAux = Resources.LoadAll("Midis", typeof(TextAsset));
+        
+        for (int i = 0; i < tabFileAux.Length; i++)
+            listText.Add(tabFileAux[i].name);
 
         Vector2 vecAux = new Vector2(0, 0);
         for (int i = 0; i < listText.Count; i++)
@@ -45,11 +44,5 @@ public class ChoixNiveauController : MonoBehaviour
             text.GetComponent<RectTransform>().sizeDelta = tailleText;
             text.text = listText[i];
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -30,7 +30,7 @@ public class EnvoiNiveau : MonoBehaviour
 
     public void SetNiveau()
     {
-        niveau = GetComponent<TextMeshProUGUI>().text + ".mid";
+        niveau = GetComponent<TextMeshProUGUI>().text;
         SceneManager.LoadScene(choixSceneJeu);
     }
 }
