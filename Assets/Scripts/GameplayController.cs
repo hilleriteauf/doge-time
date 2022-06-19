@@ -22,7 +22,11 @@ public class GameplayController : MonoBehaviour
     public ScoreController ScoreController;
     public ComboController ComboController;
 
+    public Transform MusicNoteSpawnPoint;
+    public GameObject MusicNotePrefab;
+
     private PlayableNote[] PlayableNotes;
+    private int PlayableNotesIndex;
 
     private float MusicStartTime;
 
@@ -69,6 +73,8 @@ public class GameplayController : MonoBehaviour
             }
         }
 
+        HandlePlayedNotesAnimations();
+
         HandleInputs();
     }
 
@@ -108,6 +114,23 @@ public class GameplayController : MonoBehaviour
         {
             Debug.Log("L");
             PlaceNote(MusicNote.Si);
+        }
+    }
+
+    void HandlePlayedNotesAnimations()
+    {
+        if (PlayableNotesIndex < PlayableNotes.Length && Time.time >= PlayableNotes[PlayableNotesIndex].OnTime + MusicStartTime)
+        {
+
+            if (PlayableNotes[PlayableNotesIndex].PlacedNote != MusicNote.Null)
+            {
+                ComboController.MakePublicDanse();
+
+                GameObject newMusicNote = Instantiate(MusicNotePrefab, MusicNoteSpawnPoint.position, Quaternion.identity, transform);
+                newMusicNote.GetComponent<MusicNoteController>().StartAnimation(PlayableNotes[PlayableNotesIndex].PlacedNote, ((int)PlayableNotes[PlayableNotesIndex].PlacedNote/10) == ((int)PlayableNotes[PlayableNotesIndex].ExpectedNote / 10));
+            }
+
+            PlayableNotesIndex++;
         }
     }
 
