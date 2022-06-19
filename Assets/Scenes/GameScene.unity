@@ -423,7 +423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MIDIPlayer: {fileID: 910060630}
-  MidiFileName: Never-Gonna-Give-You-Up-3-playable.mid
+  MidiFileName: Rocky.mid
   TempoMultiplier: 1
   ChainManager: {fileID: 1794917375}
   FloatingBallManager: {fileID: 2033245421}
