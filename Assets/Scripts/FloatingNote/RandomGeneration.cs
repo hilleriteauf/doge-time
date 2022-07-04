@@ -1,27 +1,22 @@
+using Assets.Scripts.MIDI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class RandomGeneration : MonoBehaviour
 {
     public GameObject FloatingNotePrefab;
-    private static List<GameObject> GeneratedFloatingNote = new List<GameObject>();
-    private static Dictionary<string, int> NoteDispersion = new Dictionary<string, int>();
-    public static int MaxNotesCount = 150;
-    public static GameObject SpawnPoint;
+
+    public Transform UpperSpawnEdge;
+    public Transform LowerSpawnEdge;
+
+    private List<GameObject> GeneratedFloatingNote = new List<GameObject>();
+    private int[] NoteDispersion = new int[7];
+    public int MaxNotesCount = 150;
+    public GameObject SpawnPoint;
     private float SpawnCoor;
     private float DespawnCoor;
-    public enum NoteList
-    {
-        Do,
-        Re,
-        Mi,
-        Fa,
-        Sol,
-        La,
-        Si
-    }
 
-    private string Note;
+    private MusicNote Note;
     private Color Color;
 
     private GameObject Temp;
@@ -37,7 +32,6 @@ public class RandomGeneration : MonoBehaviour
 
         SpawnCoor = ((Vector2)cam.ScreenToWorldPoint(new Vector3(0, 0, cam.nearClipPlane))).x;
         DespawnCoor =  ((Vector2)cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0, cam.nearClipPlane))).x;
-        Debug.Log(SpawnCoor);
 
         InitNoteDispersionTable();
         for (int i = 1; i < MaxNotesCount; i++)
@@ -69,50 +63,22 @@ public class RandomGeneration : MonoBehaviour
         foreach (GameObject Note in NotesToDelete)
         {
             GeneratedFloatingNote.Remove(Note);
-            NoteDispersion[Note.GetComponent<FloatingNote>().getNote()] -= 1;
+            NoteDispersion[(int)Note.GetComponent<FloatingNote>().getNote() / 10] -= 1;
             Destroy(Note);
         }
     }
 
     private GameObject GenerateNote(GameObject toInstanciate) 
     {
-        Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(-4.5f, 4.5f));
+        Vector3 objpos = new Vector3((SpawnCoor - toInstanciate.GetComponent<SpriteRenderer>().transform.localScale.x - Random.Range(0f, 2f)), Random.Range(LowerSpawnEdge.position.y, UpperSpawnEdge.position.y), -1);
 
 
-        GameObject toGenerate = Instantiate(toInstanciate);
+        GameObject toGenerate = Instantiate(toInstanciate, objpos, Quaternion.identity, transform);
 
-        toGenerate.GetComponent<Transform>().position = objpos;
-        toGenerate.GetComponent<Transform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        toGenerate.GetComponent<Transform>().localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
         Note = NotSoRandomlyPicked();
-        switch (Note)
-        {
-            case "Do":
-                Color = new Color(1f, 0f, 0f);
-                break;
-            case "Re":
-                Color =  new Color(0.7333f, 0.4470f, 0.0039f);
-                break;
-            case "Mi":
-                Color =  new Color(1f, 0.7490f, 0.3686f);
-                break;
-            case "Fa":
-                Color =  new Color(0.6117f, 0.9333f, 0.01960f);
-                break;
-            case "Sol":
-                Color =  new Color(0.0196f, 0.6941f, 0.9921f);
-                break;
-            case "La":
-                Color =  new Color(0.4274f, 0.0039f, 0.5843f);
-                break;
-            case "Si":
-                Color =  new Color(1f, 0f, 0.9960f);
-                break;
-
-            default:
-                Color =  Color.white;
-                break;
-        }
+        Color = MusicNoteHelper.GetMusicNoteColor(Note);
 
         toGenerate.GetComponent<FloatingNote>().setNote(Note);
         toGenerate.GetComponent<FloatingNote>().setNoteColor(Color);
@@ -123,56 +89,62 @@ public class RandomGeneration : MonoBehaviour
 
     private void InitNoteDispersionTable()
     {
-        try
-        {
-            NoteDispersion.Add(NoteList.Do.ToString(), 0);
-            NoteDispersion.Add(NoteList.Re.ToString(), 0);
-            NoteDispersion.Add(NoteList.Mi.ToString(), 0);
-            NoteDispersion.Add(NoteList.Fa.ToString(), 0);
-            NoteDispersion.Add(NoteList.Sol.ToString(), 0);
-            NoteDispersion.Add(NoteList.La.ToString(), 0);
-            NoteDispersion.Add(NoteList.Si.ToString(), 0);
-        }
-        catch (System.Exception)
-        {
-            Debug.Log("NoteDispersion initialization failed !");
-            throw;
-        }
 
         Debug.Log("NoteDispersion initialized !");
     }
 
-    private string NotSoRandomlyPicked() 
+    private MusicNote NotSoRandomlyPicked() 
     {
-        string PickedNote = null;
-        NoteList RandomPickingNote = (NoteList)Random.Range(0,5);
+        int RandomPickingNote = (Random.Range(0, 7));
         int PreventInfinite = 0;
 
 
-        while (PickedNote == null)
+        while (true)
         {
-            if (NoteDispersion.ContainsValue(0)) {
-                foreach (string item in NoteDispersion.Keys)
-                {
-                    if (NoteDispersion[item] == 0)
-                    {
-                        PickedNote = item;
-                        break;
-                    }
-                }
-                NoteDispersion[PickedNote] += 1;
-            } else
+            for (int i = 0; i < NoteDispersion.Length; i++)
             {
-                RandomPickingNote =  (NoteList)Random.Range(0,7);
-                if (NoteDispersion[RandomPickingNote.ToString()] <= 2 || PreventInfinite > 500)
+                if (NoteDispersion[i] == 0)
                 {
-                    NoteDispersion[RandomPickingNote.ToString()] += 1;
-                    PickedNote = RandomPickingNote.ToString();
-                    PreventInfinite = 0;
+                    NoteDispersion[i] += 1;
+                    return (MusicNote)(i * 10);
                 }
-                PreventInfinite++;
+            }
+            
+            RandomPickingNote = Random.Range(0,7);
+            if (NoteDispersion[RandomPickingNote] <= 2 || PreventInfinite > 500)
+            {
+                NoteDispersion[RandomPickingNote] += 1;
+                return (MusicNote)(RandomPickingNote * 10);
+            }
+            PreventInfinite++;
+        }
+    }
+
+    public GameObject GetBallToPlace(MusicNote MusicNote, Vector3 GuidePosition)
+    {
+
+        GameObject Closest = null;
+        float ClosestDistance = float.MaxValue;
+
+        for (int i = 0; i < GeneratedFloatingNote.Count; i++)
+        {
+            if (GeneratedFloatingNote[i].GetComponent<FloatingNote>().getNote() == MusicNote)
+            {
+                float Distance = Mathf.Abs(GeneratedFloatingNote[i].transform.position.x - GuidePosition.x);
+                if (Distance < ClosestDistance)
+                {
+                    Closest = GeneratedFloatingNote[i];
+                    ClosestDistance = Distance;
+                }
             }
         }
-        return PickedNote;
+
+        if (Closest != null)
+        {
+            GeneratedFloatingNote.Remove(Closest);
+            NoteDispersion[(int)MusicNote / 10] -= 1;
+        }
+
+        return Closest;
     }
 }
