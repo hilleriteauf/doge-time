@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class ChoixNiveau : MonoBehaviour
+public class EnvoiNiveau : MonoBehaviour
 {
+    public static string niveau;
+
     private const int choixSceneJeu = 4;
 
     // Start is called before the first frame update
@@ -19,8 +23,14 @@ public class ChoixNiveau : MonoBehaviour
         
     }
 
-    public void choixNiveau()
+    public static string GetNiveau()
     {
+        return niveau;
+    }
+
+    public void SetNiveau()
+    {
+        niveau = GetComponent<TextMeshProUGUI>().text;
         SceneManager.LoadScene(choixSceneJeu);
     }
 }

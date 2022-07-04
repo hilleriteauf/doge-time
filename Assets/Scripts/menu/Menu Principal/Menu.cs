@@ -11,8 +11,8 @@ public class Menu : MonoBehaviour
     public GameObject textQuit;
 
     //Ecran avec (0,0) en bas à gauche
-    private float longEcran = Screen.width;
-    private float hautEcran = Screen.height;
+    private float longEcran;
+    private float hautEcran;
 
     private Vector2 echelle;
 
@@ -40,6 +40,9 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
+        longEcran = Screen.width;
+        hautEcran = Screen.height;
+
         echelle = MethodeStatic.getScale();
 
         espaceEntreTitre = (hautEcran - nbTitre * hautTitre * echelle.y) / (nbTitre + 1);
