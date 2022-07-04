@@ -10,6 +10,9 @@ public class Menu : MonoBehaviour
     public GameObject textCredit;
     public GameObject textQuit;
 
+
+    private int choixTitre;// 0 = Play, 1 = Option, 2 = Credit, 3 = Quit
+
     //Ecran avec (0,0) en bas à gauche
     private float longEcran;
     private float hautEcran;
@@ -82,6 +85,8 @@ public class Menu : MonoBehaviour
             titreQuit
         };
 
+        choixTitre = 0;
+
         anim = 1;
 
         choixScene = 0;
@@ -99,6 +104,35 @@ public class Menu : MonoBehaviour
                     UpdateCoord();
                 break;
             case 2://Attente du choix du menu
+                if (Input.GetKeyDown(KeyCode.UpArrow))
+                    choixTitre = (choixTitre - 1 + nbTitre) % nbTitre;
+
+                if (Input.GetKeyDown(KeyCode.DownArrow))
+                    choixTitre = (choixTitre + 1) % nbTitre;
+
+                for (int i = 0; i < nbTitre; ++i)
+                {
+                    if (Survole(listTitre[i].PosMil))
+                    {
+                        choixTitre = i;
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            choixScene = choixTitre + 1;
+                            AnimationSortie();
+                        }
+                    }
+
+                    listTitre[i].SupSelection();
+                }
+
+                if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+                {
+                    choixScene = choixTitre + 1;
+                    AnimationSortie();
+                }
+
+                listTitre[choixTitre].Selection();
+
                 break;
             case 3://Sortie des titres du menu
                 if (listTitre[0].Traj.AnimFini)
@@ -121,34 +155,19 @@ public class Menu : MonoBehaviour
         Vector2 vAux;
         for (int i = 0; i < listTitre.Count; i++)//MAJ des positions des titres
         {
-            vAux = MethodeStatic.getPositionRect(listTitre[i].GObject);
-            vAux.x = listTitre[i].Traj.UpdatePos(listTitre[i].GObject.GetComponent<Transform>().position.x);
-            listTitre[i].GObject.GetComponent<RectTransform>().position = vAux;
+            vAux = MethodeStatic.getPositionRect(listTitre[i].Titre);
+            vAux.x = listTitre[i].Traj.UpdatePos(listTitre[i].Titre.GetComponent<Transform>().position.x);
+            listTitre[i].Titre.GetComponent<RectTransform>().position = vAux;
         }
     }
 
-    public void ActionPlay()
+    public bool Survole(Vector2 posTitre)
     {
-        choixScene = 1;
-        AnimationSortie();
-    }
-
-    public void ActionOption()
-    {
-        choixScene = 2;
-        AnimationSortie();
-    }
-
-    public void ActionCredit()
-    {
-        choixScene = 3;
-        AnimationSortie();
-    }
-
-    public void ActionQuit()
-    {
-        choixScene = choixSceneQuit;
-        AnimationSortie();
+        Vector3 mouse = Input.mousePosition;
+        return posTitre.x - longTitre / 2 <= mouse.x
+            && mouse.x <= posTitre.x + longTitre / 2
+            && posTitre.y - hautTitre / 2 <= mouse.y
+            && mouse.y <= posTitre.y + hautTitre / 2;
     }
 
     public void AnimationSortie()

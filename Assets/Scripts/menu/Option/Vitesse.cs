@@ -6,18 +6,6 @@ public class Vitesse : MonoBehaviour
     public static float value = 0.5f;
     public static float vitesse = 0.75f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public static float GetVitesse()
     {
         return vitesse;
@@ -35,6 +23,5 @@ public class Vitesse : MonoBehaviour
             else
                 vitesse = 0.75f;
         }
-        Debug.Log("v_tesse : " + vitesse);
     }
 }
