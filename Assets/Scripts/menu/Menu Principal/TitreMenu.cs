@@ -1,42 +1,36 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class TitreMenu
 {
-    private GameObject titre;
+    private TextMeshProUGUI titre;
 
-    private Vector2 posDep;
     private Vector2 posMil;
     private Vector2 posFin;
 
-    private Vector3 echelleNormale;
-    private Vector3 echelleAgrandissement;
-    private readonly float textAgrandissement = 1.2f;//Agrandissement du texte lors de la sélection
+    private readonly Vector2 echelleNormale = new(1, 1);
+    private const float agrandissement = 1.2f;
+    private Vector2 echelleAgrandissement;//Agrandissement du texte lors de la sélection
 
     private const float dureeAnim = 2;
 
     private Trajectoire traj;
 
-    public GameObject Titre { get => titre; set => titre = value; }
+    public TextMeshProUGUI Titre { get => titre; set => titre = value; }
     public Trajectoire Traj { get => traj; set => traj = value; }
     public Vector2 PosMil { get => posMil; set => posMil = value; }
 
-    public TitreMenu(GameObject titre, List<Vector2> pos, Vector3 echelle)
+    public TitreMenu(TextMeshProUGUI titre, float posMil, float posFin)
     {
         this.titre = titre;
+        Vector2 posDep = MethodeStatic.GetPositionRect(titre);
 
-        this.posDep = pos[0];
-        this.posMil = pos[1];
-        this.posFin = pos[2];
+        this.posMil = new Vector2(posMil, posDep.y);
+        this.posFin = new Vector2(posFin, posDep.y);
 
-        this.titre.GetComponent<RectTransform>().position = this.posDep;
-        
-        this.echelleNormale = echelle;
-        this.echelleAgrandissement = echelle * this.textAgrandissement;
-        this.titre.GetComponent<RectTransform>().localScale = echelle;
+        this.echelleAgrandissement = this.echelleNormale * agrandissement;
 
-        this.traj = new Trajectoire(this.posDep.x, this.posMil.x, dureeAnim, 1);
+        this.traj = new Trajectoire(posDep.x, this.posMil.x, dureeAnim, 1);
     }
 
     public void Fin()
