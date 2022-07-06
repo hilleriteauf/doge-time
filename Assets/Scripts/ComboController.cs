@@ -99,11 +99,11 @@ public class ComboController : MonoBehaviour
     private int[] GetDigitsArrayFromScoreAmount(int scoreAmount)
     {
         List<int> listOfInts = new List<int>();
-        while (scoreAmount > 0)
+        do
         {
             listOfInts.Add(scoreAmount % 10);
             scoreAmount = scoreAmount / 10;
-        }
+        } while (scoreAmount > 0);
         listOfInts.Reverse();
         return listOfInts.ToArray();
     }
