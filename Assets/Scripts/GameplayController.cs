@@ -145,15 +145,16 @@ public class GameplayController : MonoBehaviour
         {
             if (PlayableNotes[PlayableNotesIndex].PlacedNote == MusicNote.Null)
             {
-                MissedNoteCounter++;
+                UpdateScore(false, false);
             }
             else {
                 ComboController.MakePublicDanse();
 
-                GameObject newMusicNote = Instantiate(MusicNotePrefab, MusicNoteSpawnPoint.position, Quaternion.identity, transform);
-
                 bool wellPlaced = ((int)PlayableNotes[PlayableNotesIndex].PlacedNote / 10) == ((int)PlayableNotes[PlayableNotesIndex].ExpectedNote / 10);
 
+                UpdateScore(true, wellPlaced);
+
+                GameObject newMusicNote = Instantiate(MusicNotePrefab, MusicNoteSpawnPoint.position, Quaternion.identity, transform);
                 newMusicNote.GetComponent<MusicNoteController>().StartAnimation(PlayableNotes[PlayableNotesIndex].PlacedNote, wellPlaced);
             }
 
@@ -177,7 +178,7 @@ public class GameplayController : MonoBehaviour
             return;
         }
 
-        UpdateScore(EmptyNoteGuide.GetComponent<NoteGuideController>().PlaceNote(MusicNote));
+        EmptyNoteGuide.GetComponent<NoteGuideController>().PlaceNote(MusicNote);
 
         GameObject Ball = FloatingBallManager.GetBallToPlace(MusicNote, EmptyNoteGuide.transform.position);
         if (Ball != null)
@@ -202,13 +203,18 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    void UpdateScore(bool WellPlaced)
+    void UpdateScore(bool placed, bool WellPlaced)
     {
 
 
-        if (WellPlaced)
+        if (!placed)
         {
-            Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider));
+            Combo = 0;
+            MissedNoteCounter++;
+        }
+        else if (WellPlaced)
+        {
+            Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider) * TempoMultiplier);
             Combo++;
             CorrectNoteCounter++;
 
