@@ -214,7 +214,7 @@ public class GameplayController : MonoBehaviour
         }
         else if (WellPlaced)
         {
-            Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider));
+            Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider) * TempoMultiplier);
             Combo++;
             CorrectNoteCounter++;
 
