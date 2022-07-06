@@ -26,7 +26,7 @@ public class GameplayController : MonoBehaviour
     public Transform MusicNoteSpawnPoint;
     public GameObject MusicNotePrefab;
 
-    public GameObject TIOUTANNN;
+    public EndScreenController EndScreenController;
 
     private PlayableNote[] PlayableNotes;
     private int PlayableNotesIndex = 0;
@@ -36,13 +36,18 @@ public class GameplayController : MonoBehaviour
     private int Combo = 0;
     private int Score = 0;
 
+    private int CorrectNoteCounter = 0;
+    private int IncorrectNoteCounter = 0;
+    private int MissedNoteCounter = 0;
+    private int MaximumCombo = 0;
+
     private const int choixSceneMenu = 0;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        TIOUTANNN.SetActive(false);
+        EndScreenController.Hide();
 
         MIDIPlayer.Gain = Sound.GetSound();
         if (EnvoiNiveau.GetNiveau() != null) MidiFileName = EnvoiNiveau.GetNiveau();
@@ -138,19 +143,27 @@ public class GameplayController : MonoBehaviour
     {
         if (PlayableNotesIndex < PlayableNotes.Length && Time.time >= PlayableNotes[PlayableNotesIndex].OnTime + MusicStartTime)
         {
-
-            if (PlayableNotes[PlayableNotesIndex].PlacedNote != MusicNote.Null)
+            if (PlayableNotes[PlayableNotesIndex].PlacedNote == MusicNote.Null)
             {
+                MissedNoteCounter++;
+            }
+            else {
                 ComboController.MakePublicDanse();
 
                 GameObject newMusicNote = Instantiate(MusicNotePrefab, MusicNoteSpawnPoint.position, Quaternion.identity, transform);
-                newMusicNote.GetComponent<MusicNoteController>().StartAnimation(PlayableNotes[PlayableNotesIndex].PlacedNote, ((int)PlayableNotes[PlayableNotesIndex].PlacedNote/10) == ((int)PlayableNotes[PlayableNotesIndex].ExpectedNote / 10));
+
+                bool wellPlaced = ((int)PlayableNotes[PlayableNotesIndex].PlacedNote / 10) == ((int)PlayableNotes[PlayableNotesIndex].ExpectedNote / 10);
+
+                newMusicNote.GetComponent<MusicNoteController>().StartAnimation(PlayableNotes[PlayableNotesIndex].PlacedNote, wellPlaced);
             }
 
             PlayableNotesIndex++;
 
             if (PlayableNotesIndex == PlayableNotes.Length)
-                TIOUTANNN.SetActive(true);
+            {
+                EndScreenController.Display(CorrectNoteCounter, IncorrectNoteCounter, MissedNoteCounter, MaximumCombo, TempoMultiplier, Score);
+                ScoreController.Hide();
+            }
         }
     }
 
@@ -192,15 +205,22 @@ public class GameplayController : MonoBehaviour
     void UpdateScore(bool WellPlaced)
     {
 
-        Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider));
 
         if (WellPlaced)
         {
+            Score += (int)(ScoreByGoodPlacing * (1 + (float)Combo / (float)ComboDivider));
             Combo++;
+            CorrectNoteCounter++;
+
+            if (Combo >= MaximumCombo)
+            {
+                MaximumCombo = Combo;
+            }
         }
         else
         {
             Combo = 0;
+            IncorrectNoteCounter++;
         }
 
         ScoreController.SetScore(Score);
