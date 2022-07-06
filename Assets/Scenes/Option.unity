@@ -361,9 +361,10 @@ GameObject:
   - component: {fileID: 485037949}
   - component: {fileID: 485037951}
   - component: {fileID: 485037950}
+  - component: {fileID: 485037952}
   m_Layer: 5
   m_Name: volume
-  m_TagString: VolumeMusique
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -485,6 +486,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 485037948}
   m_CullTransparentMesh: 1
+--- !u!114 &485037952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 485037948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9008e4eccb476364ca5a567fb6a5516d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &544997747
 GameObject:
   m_ObjectHideFlags: 0
@@ -920,6 +933,18 @@ MonoBehaviour:
       - m_Target: {fileID: 704477389}
         m_TargetAssemblyTypeName: Sound, Assembly-CSharp
         m_MethodName: SetSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 485037952}
+        m_TargetAssemblyTypeName: Sound, Assembly-CSharp
+        m_MethodName: UpdateTexte
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
