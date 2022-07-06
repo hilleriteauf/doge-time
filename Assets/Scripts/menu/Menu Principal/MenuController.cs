@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Menu : MonoBehaviour
+public class MenuController : MonoBehaviour
 {
     public GameObject textPlay;
     public GameObject textOption;
@@ -112,14 +112,14 @@ public class Menu : MonoBehaviour
 
                 for (int i = 0; i < nbTitre; ++i)
                 {
-                    if (Survole(listTitre[i].PosMil))
+                    if ((Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0) && Survole(listTitre[i].PosMil))
+                        choixTitre = i;
+
+                    if (Input.GetMouseButtonDown(0) && Survole(listTitre[i].PosMil))
                     {
                         choixTitre = i;
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            choixScene = choixTitre + 1;
-                            AnimationSortie();
-                        }
+                        choixScene = choixTitre + 1;
+                        AnimationSortie();
                     }
 
                     listTitre[i].SupSelection();
