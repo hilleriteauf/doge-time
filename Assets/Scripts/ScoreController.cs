@@ -32,6 +32,10 @@ public class ScoreController : MonoBehaviour
         //Simle.StonePickUp += AddScoreAndDisplayIt;
     }
 
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 
     public void SetScore(int NewScore)
     {
