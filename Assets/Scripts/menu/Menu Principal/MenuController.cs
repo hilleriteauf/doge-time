@@ -2,32 +2,27 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
     public GameObject canvas;
-
-    private int choixTitre;// 0 = Play, 1 = Option, 2 = Credit, 3 = Quit
 
     //Ecran avec (0,0) en bas à gauche
     private Vector2 screenSize;
 
     //Titre avec (0,0) au milieu
     private Vector2 titleSize;
-
-    private int nbTitre;
     private float espaceEntreTitre;
-
     private const float distDecalageTitre = 700;//Décalage pour avoir un effet de différentes vitesses pour l'animation
 
     List<TitreMenu> listTitre;
 
-    private const int nbAnim = 3;
-    private int anim;// 1 = départ, 2 = en attente, 3 = fin
+    private int nbTitre;
 
-    private int choixScene;// 0 = Menu, 1 = Choix niveau, 2 = Option, 3 = Crédit, 4 = Jeu, 5 = Quit
-    private const int choixSceneQuit = 5;
+    private readonly String[] scene = new String[4] { "ChoixNiveau", "Option", "Credit", "Quit" };
+    private int choixScene;//Index qui indique le choix de la scène
+
+    private int anim;// 1 = départ, 2 = en attente, 3 = fin
 
     void Start()
     {
@@ -59,7 +54,7 @@ public class MenuController : MonoBehaviour
         for (int i = 0; i < nbTitre; ++i)
             listTitre.Add(new TitreMenu(tabTitle[i], posMil, posFin[i]));
 
-        choixTitre = 0;
+        choixScene = 0;
 
         anim = 1;
 
@@ -79,20 +74,19 @@ public class MenuController : MonoBehaviour
                 break;
             case 2://Attente du choix du menu
                 if (Input.GetKeyDown(KeyCode.UpArrow))
-                    choixTitre = (choixTitre - 1 + nbTitre) % nbTitre;
+                    choixScene = (choixScene - 1 + nbTitre) % nbTitre;
 
                 if (Input.GetKeyDown(KeyCode.DownArrow))
-                    choixTitre = (choixTitre + 1) % nbTitre;
+                    choixScene = (choixScene + 1) % nbTitre;
 
                 for (int i = 0; i < nbTitre; ++i)
                 {
                     if ((Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0) && Survole(listTitre[i].PosMil))
-                        choixTitre = i;
+                        choixScene = i;
 
                     if (Input.GetMouseButtonDown(0) && Survole(listTitre[i].PosMil))
                     {
-                        choixTitre = i;
-                        choixScene = choixTitre + 1;
+                        choixScene = i;
                         AnimationSortie();
                     }
 
@@ -100,22 +94,14 @@ public class MenuController : MonoBehaviour
                 }
 
                 if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-                {
-                    choixScene = choixTitre + 1;
                     AnimationSortie();
-                }
 
-                listTitre[choixTitre].Selection();
+                listTitre[choixScene].Selection();
 
                 break;
             case 3://Sortie des titres du menu
                 if (listTitre[0].Traj.AnimFini)
-                {
-                    if (choixScene == choixSceneQuit)
-                        Application.Quit();
-                    else
-                        SceneManager.LoadScene(choixScene);
-                }
+                    MethodeStatic.ActiveScene(scene[choixScene]);
                 else
                     UpdateCoord();
                 break;

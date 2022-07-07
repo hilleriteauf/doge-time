@@ -29,14 +29,25 @@ public class MethodeStatic : MonoBehaviour
         return new Vector3(a.x * b.x, a.y * b.y);
     }
 
+    /*
+     * GESTION DES SCENES
+     */
+    public static void BackToMenu()
+    {
+        SceneManager.LoadScene("MenuPrincipal");
+    }
+
     public static void DetectionBackToMenu()
     {
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Escape))
             BackToMenu();
     }
 
-    public static void BackToMenu()
+    public static void ActiveScene(string scene)
     {
-        SceneManager.LoadScene(0);
+        if (scene == "Quit")
+            Application.Quit();
+        else
+            SceneManager.LoadScene(scene);
     }
 }
