@@ -40,9 +40,9 @@ public class Trajectoire
                 switch (typeAnim)
                 {
                     case 1:
-                        return EaseInExpo();
-                    case 2:
                         return EaseOutExpo();
+                    case 2:
+                        return EaseInExpo(); 
                     default:
                         throw new Exception("type d'animation non correct");
                 }
