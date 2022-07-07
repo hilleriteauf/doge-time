@@ -16,7 +16,6 @@ public class OptionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Escape))
-            MethodeStatic.BackToMenu();
+        MethodeStatic.DetectionBackToMenu();
     }
 }

@@ -29,6 +29,12 @@ public class MethodeStatic : MonoBehaviour
         return new Vector3(a.x * b.x, a.y * b.y);
     }
 
+    public static void DetectionBackToMenu()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Escape))
+            BackToMenu();
+    }
+
     public static void BackToMenu()
     {
         SceneManager.LoadScene(0);
