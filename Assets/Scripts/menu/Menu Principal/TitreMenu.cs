@@ -5,6 +5,7 @@ public class TitreMenu
 {
     private TextMeshProUGUI titre;
 
+    private Vector2 posDeb;
     private Vector2 posMil;
     private Vector2 posFin;
 
@@ -12,7 +13,8 @@ public class TitreMenu
     private const float agrandissement = 1.2f;
     private Vector2 echelleAgrandissement;//Agrandissement du texte lors de la sélection
 
-    private const float dureeAnim = 2;
+    private float dureeAnim;
+    private const float decalageFin = 1;
 
     private Trajectoire traj;
 
@@ -20,22 +22,25 @@ public class TitreMenu
     public Trajectoire Traj { get => traj; set => traj = value; }
     public Vector2 PosMil { get => posMil; set => posMil = value; }
 
-    public TitreMenu(TextMeshProUGUI titre, float posMil, float posFin)
+    public TitreMenu(TextMeshProUGUI titre, float posY, float dureeAnim)
     {
+        this.dureeAnim = dureeAnim;
         this.titre = titre;
-        Vector2 posDep = MethodeStatic.GetPositionRect(titre);
 
-        this.posMil = new Vector2(posMil, posDep.y);
-        this.posFin = new Vector2(posFin, posDep.y);
+        this.posDeb = new Vector2(- MethodeStatic.GetSizeRect(titre).x, posY);
+        this.posMil = new Vector2(Screen.width / 2, posY);
+        this.posFin = new Vector2(Screen.width + MethodeStatic.GetSizeRect(titre).x, posY);
+
+        this.titre.GetComponent<RectTransform>().position = this.posDeb;
 
         this.echelleAgrandissement = this.echelleNormale * agrandissement;
 
-        this.traj = new Trajectoire(posDep.x, this.posMil.x, dureeAnim, 1);
+        this.traj = new Trajectoire(this.posDeb.x, this.posMil.x, this.dureeAnim, 1);
     }
 
     public void Fin()
     {
-        this.Traj = new Trajectoire(this.posMil.x, this.posFin.x, dureeAnim, 2);
+        this.Traj = new Trajectoire(this.posMil.x, this.posFin.x, this.dureeAnim - decalageFin, 2);
     }
 
     public void SupSelection()

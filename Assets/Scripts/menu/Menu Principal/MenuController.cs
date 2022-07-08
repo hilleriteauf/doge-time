@@ -13,7 +13,6 @@ public class MenuController : MonoBehaviour
     //Titre avec (0,0) au milieu
     private Vector2 titleSize;
     private float espaceEntreTitre;
-    private const float distDecalageTitre = 700;//Décalage pour avoir un effet de différentes vitesses pour l'animation
 
     List<TitreMenu> listTitre;
 
@@ -23,6 +22,8 @@ public class MenuController : MonoBehaviour
     private int choixScene;//Index qui indique le choix de la scène
 
     private int anim;// 1 = départ, 2 = en attente, 3 = fin
+    private const float dureeAnmiation = 1.5f;
+    private const float decalageAnimation = 0.2f;
 
     void Start()
     {
@@ -35,24 +36,14 @@ public class MenuController : MonoBehaviour
 
         espaceEntreTitre = (screenSize.y - nbTitre * titleSize.y) / (nbTitre + 1);
 
-        float posMil = screenSize.x / 2;//Position de l'animation "en attente"
-        float[] posFin = new float[nbTitre];//Position de l'animation "fin"
-
-        float auxPosY = espaceEntreTitre + titleSize.y / 2;
-
-
-
-        for (int i = nbTitre - 1; i >= 0; i--)
-        {
-            tabTitle[i].GetComponent<RectTransform>().position = new Vector2(-titleSize.x / 2 - i * distDecalageTitre, auxPosY);//Position de départ du titre
-            posFin[i] = screenSize.x + titleSize.x / 2 + i * distDecalageTitre;//position de fin du titre (même hauteur)
-            auxPosY += espaceEntreTitre + titleSize.y;
-        }
-
+        float auxPosY = screenSize.y - espaceEntreTitre - titleSize.y / 2;
         listTitre = new List<TitreMenu>();
 
         for (int i = 0; i < nbTitre; ++i)
-            listTitre.Add(new TitreMenu(tabTitle[i], posMil, posFin[i]));
+        {
+            listTitre.Add(new TitreMenu(tabTitle[i], auxPosY, dureeAnmiation + i * decalageAnimation));
+            auxPosY += - espaceEntreTitre - titleSize.y;
+        }
 
         choixScene = 0;
 
@@ -67,7 +58,7 @@ public class MenuController : MonoBehaviour
         switch (anim)
         {
             case 1://Arrivé des titres du menu
-                if (listTitre[0].Traj.AnimFini)
+                if (listTitre[nbTitre-1].Traj.AnimFini)
                     anim = 2;
                 else
                     UpdateCoord();
@@ -100,7 +91,7 @@ public class MenuController : MonoBehaviour
 
                 break;
             case 3://Sortie des titres du menu
-                if (listTitre[0].Traj.AnimFini)
+                if (listTitre[nbTitre-1].Traj.AnimFini)
                     MethodeStatic.ActiveScene(scene[choixScene]);
                 else
                     UpdateCoord();
