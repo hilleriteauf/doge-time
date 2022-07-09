@@ -1,40 +1,41 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Vitesse : MonoBehaviour
 {
-    public static float value = 0.5f;
-    public static float vitesse = 0.75f;
+    private static float value = 0.5f;
 
-    // Start is called before the first frame update
-    void Start()
+    public static void Initialisation(GameObject go)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        go.GetComponent<Scrollbar>().value = value;
     }
 
     public static float GetVitesse()
     {
-        return vitesse;
+        if (value < 0.33f)
+            return 0.5f;
+        else
+        {
+            if (value > 0.66f)
+                return 1f;
+            else
+                return 0.75f;
+        }
     }
 
     public void SetVitesse()
     {
         value = GetComponent<Scrollbar>().value;
-        if (value < 0.33f)
-            vitesse = 0.5f;
-        else
-        {
-            if (value > 0.66f)
-                vitesse = 1f;
-            else
-                vitesse = 0.75f;
-        }
-        Debug.Log("v_tesse : " + vitesse);
+    }
+
+    public void UpdateTexte()
+    {
+        GetComponent<TextMeshProUGUI>().text = "x " + System.Convert.ToString(GetVitesse());
+    }
+
+    public float GetValue()
+    {
+        return value;
     }
 }
