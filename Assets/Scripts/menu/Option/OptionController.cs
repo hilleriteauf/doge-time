@@ -1,22 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OptionController : MonoBehaviour
 {
-    public GameObject titre;
-    public GameObject scrollbar;
+    public GameObject scrollbarVolume;
+    public GameObject scrollbarVitesse;
+    public GameObject titreBackMenu;
 
     // Start is called before the first frame update
     void Start()
     {
-        titre.GetComponent<RectTransform>().localScale = MethodeStatic.getScale();
-        titre.GetComponent<RectTransform>().localScale = MethodeStatic.getScale();
+        Sound.Initialisation(scrollbarVolume);
+        Vitesse.Initialisation(scrollbarVitesse);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        MethodeStatic.DetectionBackToMenu();
     }
 }

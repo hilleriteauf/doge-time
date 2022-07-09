@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,16 +6,9 @@ public class Sound : MonoBehaviour
 {
     public static float sound = 0.5f;
 
-    // Start is called before the first frame update
-    void Start()
+    public static void Initialisation(GameObject go)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        go.GetComponent<Scrollbar>().value = sound;
     }
 
     public static float GetSound()
@@ -28,7 +19,10 @@ public class Sound : MonoBehaviour
     public void SetSound()
     {
         sound = GetComponent<Scrollbar>().value;
-        GameObject text = GameObject.FindGameObjectsWithTag("VolumeMusique")[0];
-        text.GetComponent<TextMeshProUGUI>().text = System.Convert.ToString((int)(sound*100)) + " %";
+    }
+
+    public void UpdateTexte()
+    {
+        GetComponent<TextMeshProUGUI>().text = System.Convert.ToString((int)(sound * 100)) + " %";
     }
 }

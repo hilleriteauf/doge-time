@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.IO;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -9,40 +8,41 @@ public class ChoixNiveauController : MonoBehaviour
     public GameObject prefab;
 
     private const int nbNivParLig = 3;
-    private Vector2 tailleText;
-    private float espaceEntreTexte;
-
-    private List<string> listText;
+    private int nbNivParCol;
+    private readonly Vector2 tailleText = new(600, 90);
+    private float longueurEntreTexte;
+    private float hauteurEntreTexte;
 
     // Start is called before the first frame update
     void Start()
     {
-        tailleText = new Vector2(600, 90);
+        UnityEngine.Object[] tabFileAux = Resources.LoadAll("Midis", typeof(TextAsset));
+        nbNivParCol = (int)Math.Ceiling(tabFileAux.Length / 3.0);
+        Debug.Log(nbNivParCol);
 
-        listText = new List<string>();
+        Vector2 tailleTextEchelle = MethodeStatic.MultiplicationVector2(tailleText, MethodeStatic.GetScaleRect(canvas));
+        longueurEntreTexte = (Screen.width - nbNivParLig * tailleTextEchelle.x) / (nbNivParLig + 1);
+        hauteurEntreTexte = (Screen.height - nbNivParCol * tailleTextEchelle.y) / (nbNivParCol + 1);
 
-        espaceEntreTexte = (Screen.width - nbNivParLig * tailleText.x) / (nbNivParLig + 1);
-
-        Object[] tabFileAux = Resources.LoadAll("Midis", typeof(TextAsset));
-        
+        Vector2 vecAux = new(0, Screen.height + tailleTextEchelle.y / 2);
+        String str;
         for (int i = 0; i < tabFileAux.Length; i++)
-            listText.Add(tabFileAux[i].name);
-
-        Vector2 vecAux = new Vector2(0, 0);
-        for (int i = 0; i < listText.Count; i++)
         {
             TextMeshProUGUI text = Instantiate(prefab).GetComponent<TextMeshProUGUI>();
             text.transform.SetParent(canvas.transform);
 
             if (i % nbNivParLig == 0)
-                vecAux = new Vector2(espaceEntreTexte + tailleText.x / 2, Screen.height - 200 * (i + 1) / nbNivParLig);
+                vecAux = new Vector2(longueurEntreTexte + tailleTextEchelle.x / 2, vecAux.y - hauteurEntreTexte - tailleTextEchelle.y);
             else
-                vecAux = new Vector2(vecAux.x + espaceEntreTexte + tailleText.x, vecAux.y);
+                vecAux = new Vector2(vecAux.x + longueurEntreTexte + tailleTextEchelle.x, vecAux.y);
 
-            text.name = i.ToString();
+            str = tabFileAux[i].name;
+            text.name = str;
             text.GetComponent<RectTransform>().position = vecAux;
             text.GetComponent<RectTransform>().sizeDelta = tailleText;
-            text.text = listText[i];
+            text.GetComponent<RectTransform>().localScale = new Vector2(1, 1);
+            str = str.Remove(str.Length - 4);//Enlève le .mid à la fin du nom de fichier
+            text.text = str;
         }
     }
 }

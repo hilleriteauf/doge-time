@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 1520420908}
   - component: {fileID: 1520420912}
   - component: {fileID: 1520420911}
-  - component: {fileID: 1520420910}
+  - component: {fileID: 1520420913}
   - component: {fileID: 1520420909}
   m_Layer: 5
   m_Name: backMenu
@@ -376,8 +376,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1520420910}
-          m_TargetAssemblyTypeName: BackMenu, Assembly-CSharp
+        - m_Target: {fileID: 1520420913}
+          m_TargetAssemblyTypeName: MethodeStatic, Assembly-CSharp
           m_MethodName: BackToMenu
           m_Mode: 1
           m_Arguments:
@@ -388,18 +388,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &1520420910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1520420907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8988967d08eb4c8499e744632f7606f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1520420911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -497,6 +485,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1520420907}
   m_CullTransparentMesh: 1
+--- !u!114 &1520420913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520420907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be3b67a97b6fc7f44bcf7284deef0cfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1989212551
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,12 +621,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
