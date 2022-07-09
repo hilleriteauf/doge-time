@@ -45,4 +45,10 @@ public class ChoixNiveauController : MonoBehaviour
             text.text = str;
         }
     }
+
+    // Update is called once per frame
+    void Update()
+    {
+        MethodeStatic.EchapBackToMenu();
+    }
 }

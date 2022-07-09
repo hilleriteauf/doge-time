@@ -37,6 +37,11 @@ public class MethodeStatic : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Escape))
             BackToMenu();
     }
+    public static void EchapBackToMenu()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            BackToMenu();
+    }
 
     public static void ActiveScene(string scene)
     {

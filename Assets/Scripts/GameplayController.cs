@@ -2,7 +2,6 @@ using Assets.Scripts.MIDI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameplayController : MonoBehaviour
 {
@@ -40,8 +39,6 @@ public class GameplayController : MonoBehaviour
     private int IncorrectNoteCounter = 0;
     private int MissedNoteCounter = 0;
     private int MaximumCombo = 0;
-
-    private const int choixSceneMenu = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -135,7 +132,7 @@ public class GameplayController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("retour menu");
-            SceneManager.LoadScene(choixSceneMenu);
+            MethodeStatic.BackToMenu();
         }
     }
 
