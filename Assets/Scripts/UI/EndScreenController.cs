@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EndScreenController : MonoBehaviour
 {
@@ -31,12 +28,12 @@ public class EndScreenController : MonoBehaviour
 
     public void LoadMenu()
     {
-        SceneManager.LoadScene("MenuScene");
+        MethodeStatic.BackToMenu();
     }
 
     public void TryAgain()
     {
-        SceneManager.LoadScene("GameScene");
+        MethodeStatic.ActiveScene("GameScene");
     }
 
     private void SetValue(TextMeshProUGUI text, string value)
