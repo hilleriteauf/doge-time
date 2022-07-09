@@ -9,20 +9,6 @@ public class EnvoiNiveau : MonoBehaviour
 {
     public static string niveau;
 
-    private const int choixSceneJeu = 4;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public static string GetNiveau()
     {
         return niveau;
@@ -30,7 +16,7 @@ public class EnvoiNiveau : MonoBehaviour
 
     public void SetNiveau()
     {
-        niveau = GetComponent<TextMeshProUGUI>().text;
-        SceneManager.LoadScene(choixSceneJeu);
+        niveau = GetComponent<TextMeshProUGUI>().name;
+        SceneManager.LoadScene("GameScene");
     }
 }
